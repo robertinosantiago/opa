@@ -1,0 +1,32 @@
+.navbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  display: flex;
+  z-index: 1030;
+  padding-right: 15px;
+  @media(min-width: 768px) { padding-right: 30px }
+  @media print { display: none; }
+  font-size: $navbar-font-size;
+  background-color: $navbar-background;
+  color: $navbar-color;
+  a {
+    font-size: $navbar-font-size;
+  }
+  a:not(.dropdown-item) {
+    color: $navbar-color;
+  }
+  .navbar-brand {
+    font-size: $navbar-font-size;
+  }
+  .user-avatar {
+      border-radius: 50%;
+      width: 50px;
+  }
+  .user-name {
+    font-size: 0.8rem;
+  }
+
+}

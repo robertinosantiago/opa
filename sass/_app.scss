@@ -1,0 +1,81 @@
+.app {
+  @media(min-width: 768px) {
+    &.collapsed {
+      main.content {
+        margin-left: 0;
+      }
+      .sidebar {
+        left: -$sidebar-width;
+      }
+      .sidebar-overlay {
+        visibility: hidden;
+      }
+    }
+  }
+  @media(max-width: 480px) {
+    .not-small {
+      display: none;
+    }
+  }
+  @media(max-width: 767px) {
+    overflow-x: hidden;
+    .sidebar {
+      left: -$sidebar-width;
+    }
+    .sidebar-overlay {
+      visibility: hidden;
+    }
+    &.collapsed {
+      main.content {
+        margin-left: 0;
+      }
+      .sidebar {
+        left: 0;
+      }
+      .sidebar-overlay {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+main {
+  &.content {
+    min-height: calc(100vh - 50px);
+    margin-top: 50px;
+    padding: 30px;
+    background-color: $content-background;
+    transition: margin-left 0.3s ease;
+    @media(min-width: 768px) {
+      margin-left: $sidebar-width;
+    }
+    @media(max-width: 767px) {
+      margin-top: 50px;
+      min-width: 100%;
+    }
+    @media(max-width: 480px) {
+      padding: 15px;
+
+    }
+    @media print {
+      margin: 0;
+      padding: 0;
+      background-color: #fff;
+    }
+  }
+}
+
+@mixin icons-before($icons...) {
+  @each $i in $icons {
+    .fa-#{nth($i, 1)} {
+      &:before {
+        content: nth($i, 2);
+      }
+    }
+  }
+}
+
+@include icons-before('active' '\f00c', 'blocked' '\f05e', 'suspended' '\f06a');
+td.actions {
+  width: 35px;
+}
