@@ -39,10 +39,10 @@
           </a>
         </li>
         <li>
-          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Disciplines', 'action' => 'controls', $discipline->id]); ?>" title="<?=__('Discipline'); ?>">
+          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Disciplines', 'action' => 'controls', $discipline->id]); ?>" title="<?=__('Discipline overview'); ?>">
             <i class="fas fa-school"></i>
             <span class="menu-label">
-              <?=__('Discipline'); ?>
+              <?=__('Discipline overview'); ?>
             </span>
           </a>
         </li>

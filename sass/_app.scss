@@ -75,6 +75,10 @@ main {
   }
 }
 
+.list-rubrics:hover {
+  background-color: #f5f5f5;
+}
+
 @include icons-before('active' '\f00c', 'blocked' '\f05e', 'suspended' '\f06a');
 td.actions {
   width: 35px;

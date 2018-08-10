@@ -63,7 +63,7 @@ class AppController extends Controller
     'action' => 'login',
    ],
    'loginRedirect' => [
-    'controller' => 'Users',
+    'controller' => 'Home',
     'action' => 'index',
    ],
    // If unauthorized, return them to page they were just on

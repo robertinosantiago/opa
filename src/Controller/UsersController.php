@@ -22,15 +22,30 @@ class UsersController extends AppController
 
     public function login()
     {
+        $user = $this->Users->newEntity();
         if ($this->request->is('post')) {
-            $user = $this->Auth->identify();
-            if ($user) {
-                $this->Auth->setUser($user);
+            $user = $this->Users->patchEntity($user, $this->request->data);
 
-                // return $this->redirect($this->Auth->redirectUrl());
+            $auth = $this->Auth->identify();
+            if ($auth) {
+                $this->Auth->setUser($auth);
+                return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error('Your username or password is incorrect.');
+            $this->Flash->error(__('Invalid credentials.'));
         }
+        $this->set(compact('user'));
+
+
+        // if ($this->request->is('post')) {
+        //     $user = $this->Auth->identify();
+        //     debug($user);
+        //     if ($user) {
+        //         $this->Auth->setUser($user);
+
+        //         return $this->redirect($this->Auth->redirectUrl());
+        //     }
+        //     $this->Flash->error('Your username or password is incorrect.');
+        // }
     }
 
     public function register()

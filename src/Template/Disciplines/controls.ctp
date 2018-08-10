@@ -39,11 +39,6 @@
    </div>
    <div class="row">
       <div class="col">
-         <p><small><strong><?=__('Identification') ?>:</strong> <?=$discipline->id; ?></small></p>
-      </div>
-   </div>
-   <div class="row">
-      <div class="col">
          <div class="card">
             <div class="card-header">
                <div class="container-fluid">
@@ -75,14 +70,7 @@
             <div class="card-body">
                 <table class="table table-striped table-hover table-sm">
                     <tbody>
-                        <?php foreach($discipline->teams as $team): ?>
-                            <?php foreach($team->students as $student): ?>
-                                <tr>
-                                    <td><?= $student->user->full_name; ?></td>
-                                    <td><?= $team->name; ?></td>
-                                </tr>
-                           <?php endforeach; ?>
-                        <?php endforeach; ?>
+                        
                     </tbody>
                 </table>
 

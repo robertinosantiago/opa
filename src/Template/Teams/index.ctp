@@ -40,11 +40,7 @@
             <div class="card-body">
                 <table class="table table-striped table-hover table-sm">
                     <tbody>
-                        <?php foreach($team->students as $student): ?>
-                           <tr>
-                               <td><?= $student->user->full_name; ?></td>
-                           </tr>
-                        <?php endforeach; ?>
+                        
                     </tbody>
                 </table>
             </div>

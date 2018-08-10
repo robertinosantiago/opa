@@ -78,7 +78,7 @@ class Application extends BaseApplication
             'applicationSecret' => env('FACEBOOK_APP_SECRET', '0f4a5cdf16bce0662f296d7f42f71bcd'),
             'scope' => [
               'email',
-              'public_profile'
+              'basic_info'
             ],
             'fields' => [
               'email',

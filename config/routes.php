@@ -47,6 +47,8 @@ use Cake\Routing\Route\DashedRoute;
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
+  $routes->setExtensions(['json']);
+  $routes->resources('Rubrics');
     /**
      * Here, we are connecting '/' (base path) to a controller called 'Pages',
      * its action called 'display', and we pass a param to select the view file
@@ -75,8 +77,10 @@ Router::scope('/', function (RouteBuilder $routes) {
      * You can remove these routes once you've connected the
      * routes you want in your application.
      */
+
     $routes->fallbacks(DashedRoute::class);
 });
+
 
 /**
  * Load all plugin routes. See the Plugin documentation on

@@ -23,7 +23,7 @@ class TeamsController extends AppController
         }
 
         $teams = $this->Teams->find('all')
-            ->contain(['Disciplines', 'Students' => ['Users']])
+            ->contain(['Disciplines', 'TeamUsers' => ['Users']])
             ->where(['discipline_id' => $discipline->id]);
 
 

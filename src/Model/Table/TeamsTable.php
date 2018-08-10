@@ -45,8 +45,9 @@ class TeamsTable extends Table
             'joinType' => 'INNER'
         ]);
 
-        $this->hasMany('Students');
+        $this->hasMany('TeamUsers');
     }
+
 
     /**
      * Default validation rules.

@@ -21,8 +21,10 @@ class CreateUsers extends AbstractMigration
             ->addColumn('role', 'string', ['limit' => 255, 'null' => true])
             ->addColumn('avatar', 'string', ['null' => true])
             ->addColumn('locale', 'string', ['null' => true])
+            ->addColumn('confirm', 'boolean', ['default' => false, 'null' => false])
             ->addColumn('created', 'datetime', ['null' => false])
             ->addColumn('modified', 'datetime', ['null' => false])
+            ->addIndex(['email'], ['unique' => true])
             ->create();
     }
 }

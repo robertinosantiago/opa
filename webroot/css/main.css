@@ -107,6 +107,10 @@ main.content {
   }
 }
 
+.list-rubrics:hover {
+  background-color: #f5f5f5;
+}
+
 .fa-active:before {
   content: "";
 }
@@ -354,6 +358,11 @@ td.actions {
   margin-top: 50px;
   padding: 15px;
   background-color: #fafa96;
+}
+
+#editor, .ql-editor {
+  height: 100px;
+  font-size: 1rem;
 }
 
 /*# sourceMappingURL=webroot/css/main.css.map */
