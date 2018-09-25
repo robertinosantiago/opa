@@ -25,7 +25,7 @@ class UsersTable extends Table
     {
 
         if (empty($profile->email)) {
-            throw new \RuntimeException(__('Could not find email in social profile.'));
+            throw new \RuntimeException(__('Não foi possível encontrar um email para este perfil.'));
         }
 
         $user = $this->find()
@@ -44,7 +44,7 @@ class UsersTable extends Table
         $user = $this->save($user);
 
         if (!$user) {
-            throw new \RuntimeException(__('Unable to save new user'));
+            throw new \RuntimeException(__('Não foi possível salvar este novo usuário'));
         }
 
         return $user;

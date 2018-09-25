@@ -2,19 +2,19 @@
     <div class="row">
         <div class="col-10 col-md-8">
             <h2>
-                <?=__('My rubrics'); ?>
+                <?=__('Minhas rubricas'); ?>
             </h2>
         </div>
         <div class="col-2 col-md-4 text-right">
             <?=$this->Html->link(
-                '<i class="fas fa-plus"></i> <span class="not-small">' . __('New rubric') . '</span>',
+                '<i class="fas fa-plus"></i> <span class="not-small">' . __('Nova rubrica') . '</span>',
                 [
                 'controller' => 'Rubrics',
                 'action' => 'add',
                 ],
                 [
                 'class' => 'btn btn-success',
-                'title' => __('New rubric'),
+                'title' => __('Nova rubrica'),
                 'escape' => false,
                 ]
                 ); ?>
@@ -35,7 +35,7 @@
                             <?=$this->Html->link(
                                 $rubric->title,
                                 ['controller' => 'Rubrics', 'action' => 'controls', $rubric->id],
-                                ['class' => '', 'title' => __('Edit the rubric {0}', $rubric->title)]
+                                ['class' => '', 'title' => __('Editar a rubrica {0}', $rubric->title)]
                             ); ?>
                         </td>
                     </tr>

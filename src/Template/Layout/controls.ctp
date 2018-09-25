@@ -31,26 +31,26 @@
     <aside class="sidebar">
       <ul class="sidebar-menu list-unstyled">
         <li>
-          <a class="menu-link" href="<?=$this->Url->build('/Home'); ?>" title="<?=__('Home'); ?>">
+          <a class="menu-link" href="<?=$this->Url->build('/Home'); ?>" title="<?=__('Início'); ?>">
             <i class="fas fa-home"></i>
             <span class="menu-label">
-              <?=__('Home'); ?>
+              <?=__('Início'); ?>
             </span>
           </a>
         </li>
         <li>
-          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Disciplines', 'action' => 'controls', $discipline->id]); ?>" title="<?=__('Discipline overview'); ?>">
+          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Disciplines', 'action' => 'controls', $discipline->id]); ?>" title="<?=__('Visão geral da Disciplina'); ?>">
             <i class="fas fa-school"></i>
             <span class="menu-label">
-              <?=__('Discipline overview'); ?>
+              <?=__('Visão geral da Disciplina'); ?>
             </span>
           </a>
         </li>
         <li>
-          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Teams', 'action' => 'index', $discipline->id]); ?>" title="<?=__('Teams'); ?>">
+          <a class="menu-link" href="<?=$this->Url->build(['controller' => 'Teams', 'action' => 'index', $discipline->id]); ?>" title="<?=__('Turmas'); ?>">
             <i class="fas fa-user-friends"></i>
             <span class="menu-label">
-              <?=__('Teams'); ?>
+              <?=__('Turmas'); ?>
             </span>
           </a>
         </li>

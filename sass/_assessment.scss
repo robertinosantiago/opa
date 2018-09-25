@@ -1,0 +1,16 @@
+.nav-assessment {
+  .nav-link {
+    border-radius: 100%;
+    background: $navbar-assessment-background;
+    display:inline-block;
+    line-height:70px;
+    text-decoration: none;
+    color: $sidebar-color;
+
+    &.active {
+      background: $navbar-background;
+      color: $navbar-color;
+    }
+
+  }
+}

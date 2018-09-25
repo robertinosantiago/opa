@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1><?php echo __('Discipline'); ?></h1>
+            <h1><?php echo __('Disciplina'); ?></h1>
         </div>
     </div>
     <div class="row">
@@ -18,7 +18,7 @@
                 echo $this->Form->control(
                     'name',
                     [
-                        'label' => __('Name'),
+                        'label' => __('Nome'),
                         'required' => true,
                         'class' => 'form-control',
                         'templates' => [
@@ -30,7 +30,7 @@
 <?php echo $this->Form->control(
         'description',
         [
-            'label' => __('Description'),
+            'label' => __('Descrição'),
             'required' => true,
             'class' => 'form-control',
             'type' => 'textarea',
@@ -42,7 +42,7 @@
 ); ?>
 <?php echo $this->Form->hidden('id'); ?>
 <?php echo $this->Form->button(
-        __('Save'),
+        __('Salvar'),
         [
             'class' => 'btn btn-success btn-block text-light btn-login',
         ]

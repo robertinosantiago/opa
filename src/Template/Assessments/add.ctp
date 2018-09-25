@@ -5,18 +5,48 @@
 ?>
 <div class="container">
     <div class="row">
+      <div class="col">
+        <ul class="nav justify-content-center nav-assessment">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">
+              <span class="not-small">
+                <?= __('Passo'); ?>
+              </span>
+              1
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="not-small">
+                <?= __('Passo'); ?>
+              </span>
+              2
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">
+              <span class="not-small">
+                <?= __('Passo'); ?>
+              </span>
+              3
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="row">
         <div class="col">
-        <h1><?=__('Assessment');?></h1>
+        <h1><?=__('Avaliação');?></h1>
         </div>
     </div>
     <div class="row">
         <div class="col">
-            <?= $this->Form->create(); ?>
+            <?= $this->Form->create(null,['type' => 'file']); ?>
 
             <?= $this->Form->control(
                 'title',
                 [
-                    'label' => __('Title'),
+                    'label' => __('Título'),
                     'required' => true,
                     'class' => 'form-control',
                     'templates' => [
@@ -26,68 +56,82 @@
             ); ?>
 
             <div class="form-group">
-              <label for="editor"><?php echo __('Description'); ?></label>
+              <label for="editor"><?php echo __('Descrição'); ?></label>
               <div id="editor"></div>
               <?php echo $this->Form->hidden('description', ['id' => 'description']) ?>
             </div>
 
             <?= $this->Form->control(
-                'maximum_score',
-                [
-                    'label' => __('Maximum score (min 1 and max 100)'),
+              'attachment',
+              [
+                'label' => __('Anexo'),
+                'required' => false,
+                'type' => 'file',
+                'class' => 'form-control-file',
+                'templates' => [
+                  'inputContainer' => '<div class="form-group">{{content}}</div>'
+                ]
+              ]
+            ); ?>
+
+            <div class="row">
+              <div class="col-12 col-md-12 col-lg-4">
+                <?= $this->Form->control(
+                  'maximum_score',
+                  [
+                    'label' => __('Nota máxima (Entre 1 e 100)'),
                     'required' => true,
                     'type' => 'number',
                     'min' => 1,
                     'max' => 100,
                     'class' => 'form-control',
                     'templates' => [
-                        'inputContainer' => '<div class="form-group">{{content}}</div>'
+                      'inputContainer' => '<div class="form-group">{{content}}</div>'
                     ]
-                ]
-            ); ?>
-
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <label for="startat"><?php echo __('Start at');  ?></label>
+                  ]
+                ); ?>
+              </div>
+              <div class="col-12 col-md-6 col-lg-4">
+                <label for="startat"><?php echo __('Início');  ?></label>
                 <div class="input-group date" id="startatpicker" data-target-input="nearest">
-                    <?= $this->Form->control(
-                      'startAt',
-                      [
-                        'label' => false,
-                        'required' => true,
-                        'class' => 'form-control datetimepicker-input',
-                        'data-target' => '#startatpicker',
-                        'templates' => [
-                          'inputContainer' => '{{content}}'
-                        ]
+                  <?= $this->Form->control(
+                    'startAt',
+                    [
+                      'label' => false,
+                      'required' => true,
+                      'class' => 'form-control datetimepicker-input',
+                      'data-target' => '#startatpicker',
+                      'templates' => [
+                        'inputContainer' => '{{content}}'
                       ]
-                    ); ?>
+                    ]
+                  ); ?>
 
-                    <div class="input-group-append" data-target="#startatpicker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <div class="input-group-append" data-target="#startatpicker" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
                 </div>
 
               </div>
-              <div class="col-12 col-md-6">
-                <label for="endat"><?php echo __('End at');  ?></label>
+              <div class="col-12 col-md-6 col-lg-4">
+                <label for="endat"><?php echo __('Encerramento');  ?></label>
                 <div class="input-group date" id="endatpicker" data-target-input="nearest">
-                    <?= $this->Form->control(
-                      'endAt',
-                      [
-                        'label' => false,
-                        'required' => true,
-                        'class' => 'form-control datetimepicker-input',
-                        'data-target' => '#endatpicker',
-                        'templates' => [
-                          'inputContainer' => '{{content}}'
-                        ]
+                  <?= $this->Form->control(
+                    'endAt',
+                    [
+                      'label' => false,
+                      'required' => true,
+                      'class' => 'form-control datetimepicker-input',
+                      'data-target' => '#endatpicker',
+                      'templates' => [
+                        'inputContainer' => '{{content}}'
                       ]
-                    ); ?>
+                    ]
+                  ); ?>
 
-                    <div class="input-group-append" data-target="#endatpicker" data-toggle="datetimepicker">
-                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                    </div>
+                  <div class="input-group-append" data-target="#endatpicker" data-toggle="datetimepicker">
+                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -95,7 +139,7 @@
             <?= $this->Form->control(
                 'team_id',
                 [
-                    'label' => __('Team'),
+                    'label' => __('Turma'),
                     'required' => true,
                     'class' => 'form-control',
                     'templates' => [
@@ -107,7 +151,7 @@
             <?= $this->Form->control(
                 'scale',
                 [
-                    'label' => __('Quantity of scales (min 3 and max 10)'),
+                    'label' => __('Quantidade de escalas (Entre 3 e 10)'),
                     'required' => true,
                     'class' => 'form-control',
                     'type' => 'number',
@@ -120,7 +164,7 @@
             ); ?>
 
             <button type="submit" class="btn btn-success">
-              <?php echo __('Save'); ?>
+              <?php echo __('Salvar'); ?>
             </button>
 
             <?= $this->Form->end(); ?>

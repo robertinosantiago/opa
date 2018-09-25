@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
+use Cake\Log\Log;
 
 /**
 * Assessments Controller
@@ -79,9 +80,12 @@ class AssessmentsController extends AppController
     $assessment = $this->Assessments->newEntity();
     if ($this->request->is('post')) {
       $data = $this->request->getData();
+      Log::write('debug', $data);
+      debug($data);
       $assessment = $this->Assessments->patchEntity($assessment, $data);
       $assessment->user_id = $this->Auth->user('id');
       $assessment->status = 'preparation';
+      $assessment->file = $data['attachment'];
 
       $array = [];
       for($i = 0; $i < $assessment->scale; $i++) {
@@ -98,11 +102,11 @@ class AssessmentsController extends AppController
       $assessment->endAt = Time::createFromFormat($dateFormat, $data['endAt']);
 
       if ($this->Assessments->save($assessment)) {
-        $this->Flash->success(__('The assessment has been saved.'));
+        $this->Flash->success(__('A avaliação foi criada com sucesso.'));
         $this->set('assessment', $assessment);
         return $this->redirect(['action' => 'controls', $assessment->id]);
       }
-      $this->Flash->error(__('The assessment could not be saved. Please, try again.'));
+      $this->Flash->error(__('Não foi possível salvar a avaliação. Por favor, tente novamente.'));
       debug($assessment->getErrors());
     }
 
@@ -144,13 +148,13 @@ class AssessmentsController extends AppController
     $rubricsTable = TableRegistry::get('Rubrics');
     $rubric = $rubricsTable->get($data['rubric']);
     if ($rubric->user_id != $this->Auth->user('id')) {
-      $this->Flash->error(__('You are not authorized to use this rubric.'));
+      $this->Flash->error(__('Você não está autorizado a acessar essa rubrica.'));
       return $this->redirect(['action' => 'index']);
     }
 
     $assessment = $this->Assessments->get($data['assessment_id']);
     if ($assessment->user_id != $this->Auth->user('id')) {
-      $this->Flash->error(__('You are not authorized to use this assessment.'));
+      $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
       return $this->redirect(['action' => 'index']);
     }
 
@@ -161,12 +165,12 @@ class AssessmentsController extends AppController
     $assessmentRubric->weight = ((empty($data['weight']) || $data['weight'] <= 0) ? 1 : $data['weight']);
 
     if ($assessmentRubricsTable->save($assessmentRubric)) {
-      $this->Flash->success(__('Rubric added successfully'));
+      $this->Flash->success(__('Rubrica adicionada com sucesso.'));
       return $this->redirect(['action' => 'controls', $assessment->id]);
     }
 
     // TODO: Veriricar tipos de erros que podem ocorrer aqui.
-    $this->Flash->error(__('Error'));
+    $this->Flash->error(__('Ocorreu um erro'));
     return $this->redirect(['action' => 'index']);
   }
 
@@ -176,17 +180,17 @@ class AssessmentsController extends AppController
     $assessmentRubric = $assessmentRubricsTable->get($assessment_rubric_id, ['contain' => ['Assessments']]);
 
     if ($assessmentRubric->assessment->user_id != $this->Auth->user('id')) {
-      $this->Flash->error(__('You are not authorized to use this assessment.'));
+      $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
       return $this->redirect(['action' => 'index']);
     }
 
     if ($assessmentRubric->assessment->status != 'preparation') {
-      $this->Flash->error(__('Could not remove rubric. This assessment has already been published.'));
+      $this->Flash->error(__('Você não pode remover essa rubrica. Esta avaliação já foi publicada.'));
       return $this->redirect(['action' => 'controls', $assessmentRubric->assessment->id]);
     }
 
     if ($assessmentRubricsTable->delete($assessmentRubric)) {
-      $this->Flash->success(__('Rubric removed successfully'));
+      $this->Flash->success(__('Rubrica removida com sucesso.'));
       return $this->redirect(['action' => 'controls', $assessmentRubric->assessment->id]);
     }
 
@@ -201,7 +205,7 @@ class AssessmentsController extends AppController
     $assessment = $this->Assessments->get($data['assessment_id']);
 
     if ($assessment->user_id != $this->Auth->user('id')) {
-      $this->Flash->error(__('You are not authorized to use this assessment.'));
+      $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
       return $this->redirect(['action' => 'index']);
     }
 
@@ -212,12 +216,12 @@ class AssessmentsController extends AppController
     $assessment->labels = json_encode($array);
 
     if ($this->Assessments->save($assessment)) {
-      $this->Flash->success(__('Labels changed successfully'));
+      $this->Flash->success(__('Etiquetas alteradas com sucesso.'));
       return $this->redirect(['action' => 'controls', $assessment->id]);
     }
 
     // TODO: Veriricar tipos de erros que podem ocorrer aqui.
-    $this->Flash->error(__('Error'));
+    $this->Flash->error(__('Ocorreu um erro'));
     return $this->redirect(['action' => 'index']);
   }
 
@@ -228,9 +232,9 @@ class AssessmentsController extends AppController
     $assessment->status = 'open';
 
     if ($this->Assessments->save($assessment)) {
-      $this->Flash->success(__('Assessment published successfully'));
+      $this->Flash->success(__('Avaliação publicada com sucesso.'));
     } else {
-      $this->Flash->error(__('Error'));
+      $this->Flash->error(__('Ocorreu um erro.'));
     }
 
     return $this->redirect(['action' => 'index']);
@@ -251,11 +255,11 @@ class AssessmentsController extends AppController
     if ($this->request->is(['patch', 'post', 'put'])) {
       $assessment = $this->Assessments->patchEntity($assessment, $this->request->getData());
       if ($this->Assessments->save($assessment)) {
-        $this->Flash->success(__('The assessment has been saved.'));
+        $this->Flash->success(__('A avaliação foi salva com sucesso.'));
 
         return $this->redirect(['action' => 'index']);
       }
-      $this->Flash->error(__('The assessment could not be saved. Please, try again.'));
+      $this->Flash->error(__('Não foi possível salvar a avaliação. Por favor, tente novamente.'));
     }
     $teams = $this->Assessments->Teams->find('list', ['limit' => 200]);
     $users = $this->Assessments->Users->find('list', ['limit' => 200]);
@@ -274,9 +278,9 @@ class AssessmentsController extends AppController
     $this->request->allowMethod(['post', 'delete']);
     $assessment = $this->Assessments->get($id);
     if ($this->Assessments->delete($assessment)) {
-      $this->Flash->success(__('The assessment has been deleted.'));
+      $this->Flash->success(__('A avaliação foi excluída com sucesso.'));
     } else {
-      $this->Flash->error(__('The assessment could not be deleted. Please, try again.'));
+      $this->Flash->error(__('Não foi possível excluir a avaliação. Por favor, tente novamente.'));
     }
 
     return $this->redirect(['action' => 'index']);

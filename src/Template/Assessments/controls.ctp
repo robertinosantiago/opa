@@ -1,21 +1,51 @@
 <div class="container-fluid">
   <div class="row">
+    <div class="col">
+      <ul class="nav justify-content-center nav-assessment">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="not-small">
+              <?= __('Passo'); ?>
+            </span>
+            1
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="#">
+            <span class="not-small">
+              <?= __('Passo'); ?>
+            </span>
+            2
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <span class="not-small">
+              <?= __('Passo'); ?>
+            </span>
+            3
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-12 col-md-8">
       <h2>
         <?=$assessment->title; ?>
         <?php if($assessment->status == 'preparation'): ?>
-          <span class="badge badge-success"><?= __('Preparation') ?></span>
+          <span class="badge badge-success"><?= __('Em preparação') ?></span>
         <?php elseif($assessment->status == 'open'): ?>
-          <span class="badge badge-warning"><?= __('Open') ?></span>
+          <span class="badge badge-warning"><?= __('Aberto') ?></span>
         <?php else: ?>
-          <span class="badge badge-danger"><?= __('Close') ?></span>
+          <span class="badge badge-danger"><?= __('Encerrado') ?></span>
         <?php endif; ?>
       </h2>
     </div>
     <div class="col-12 col-md-4 text-right">
     <?php if ($assessment->status == 'preparation' && count($assessment->assessment_rubrics) != 0): ?>
       <?=$this->Form->postLink(
-        '<i class="fas fa-share-square"></i> ' . __('Publish'),
+        '<i class="fas fa-share-square"></i> ' . __('Publicar'),
         [
           'controller' => 'Assessments',
           'action' => 'publish',
@@ -23,8 +53,8 @@
         ],
         [
           'class' => 'btn btn-sm btn-success',
-          'title' => __('Publish assessment'),
-          'confirm' => __('Are you sure?'),
+          'title' => __('Publicar a avaliação'),
+          'confirm' => __('Você tem certeza?'),
           'method' => 'post',
           'escape' => false,
         ]
@@ -32,7 +62,7 @@
     <?php endif; ?>
     <?php if ($assessment->status == 'preparation'): ?>
       <?=$this->Html->link(
-        '<i class="fas fa-pencil-alt"></i> ' . __('Edit'),
+        '<i class="fas fa-pencil-alt"></i> ' . __('Editar'),
         [
           'controller' => 'Assessments',
           'action' => 'edit',
@@ -40,12 +70,12 @@
         ],
         [
           'class' => 'btn btn-sm btn-warning',
-          'title' => __('Edit assessment'),
+          'title' => __('Editar avaliação'),
           'escape' => false,
         ]
       ); ?>
       <?=$this->Form->postLink(
-        '<i class="fas fa-trash-alt"></i> ' . __('Delete'),
+        '<i class="fas fa-trash-alt"></i> ' . __('Excluir'),
         [
           'controller' => 'Assessments',
           'action' => 'delete',
@@ -53,8 +83,8 @@
         ],
         [
           'class' => 'btn btn-sm btn-danger',
-          'title' => __('Delete assessment'),
-          'confirm' => __('Are you sure?'),
+          'title' => __('Excluir avaliação'),
+          'confirm' => __('Você tem certeza?'),
           'method' => 'delete',
           'escape' => false,
         ]
@@ -62,38 +92,49 @@
     <?php endif; ?>
     </div>
   </div>
+<?php //debug($assessment); ?>
+  <div class="row py-3">
+    <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-12 col-md-6">
+                <label for="team" class="mb-0"><?= __('Turma') ?> </label>
+                <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->name ?>">
+              </div>
+              <div class="col-12 col-md-6">
+                <label for="team" class="mb-0"><?= __('Disciplina') ?> </label>
+                <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->discipline->name ?>">
+              </div>
+            </div>
 
-  <div class="row">
-    <div class="col-12 col-md-6">
-      <label for="team" class="mb-0"><?= __('Team') ?> </label>
-      <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->name ?>">
-    </div>
-    <div class="col-12 col-md-6">
-      <label for="team" class="mb-0"><?= __('Discipline') ?> </label>
-      <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->discipline->name ?>">
+            <div class="row">
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label for="startAt" class="mb-0"><?= __('Início') ?></label>
+                  <input type="text" readonly class="form-control-plaintext pt-0" id="startAt" value="<?= $assessment->startAt ?>">
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label for="endAt" class="mb-0"><?= __('Encerramento') ?> </label>
+                  <input type="text" readonly class="form-control-plaintext pt-0" id="endAt" value="<?= $assessment->endAt ?>">
+                </div>
+              </div>
+              <div class="col-12 col-md-4">
+                <div class="form-group">
+                  <label for="score" class="mb-0"><?= __('Nota máxima') ?> </label>
+                  <input type="text" readonly class="form-control-plaintext pt-0" id="score" value="<?= $assessment->maximum_score ?>">
+                </div>
+              </div>
+            </div>
+
+            
+          </div>
+        </div>
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-12 col-md-4">
-      <div class="form-group">
-        <label for="startAt" class="mb-0"><?= __('Start at') ?></label>
-        <input type="text" readonly class="form-control-plaintext pt-0" id="startAt" value="<?= $assessment->startAt ?>">
-      </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <div class="form-group">
-        <label for="endAt" class="mb-0"><?= __('End at') ?> </label>
-        <input type="text" readonly class="form-control-plaintext pt-0" id="endAt" value="<?= $assessment->endAt ?>">
-      </div>
-    </div>
-    <div class="col-12 col-md-4">
-      <div class="form-group">
-        <label for="score" class="mb-0"><?= __('Maximum score') ?> </label>
-        <input type="text" readonly class="form-control-plaintext pt-0" id="score" value="<?= $assessment->maximum_score ?>">
-      </div>
-    </div>
-  </div>
 
   <div class="row">
     <div class="col-12 col-md-6">
@@ -101,13 +142,13 @@
         <div class="card-header">
           <div class="row">
             <div class="col-8">
-              <?= __('Scales')  ?>: <?= $assessment->scale ?>
+              <?= __('Escalas')  ?>: <?= $assessment->scale ?>
             </div>
             <div class="col-4 text-right">
               <?php if ($assessment->status == 'preparation'): ?>
                 <button class="btn btn-sm btn-secondary"  type="button" data-toggle="modal" data-target="#modalChangeScales">
                   <i class="fas fa-pencil-alt"></i>
-                  <?= __('Change') ?>
+                  <?= __('Alterar') ?>
                 </button>
               <?php endif; ?>
             </div>
@@ -121,9 +162,9 @@
                 <div class="row mt-2">
                   <div class="col-4 col-md-4">
                     <?php if($index == 0): ?>
-                      <?= __('Lowest') ?>
+                      <?= __('Menor') ?>
                     <?php elseif ($index == count(json_decode($assessment->labels))-1): ?>
-                      <?= __('Highest') ?>
+                      <?= __('Maior') ?>
                     <?php endif; ?>
                   </div>
                   <div class="col-8 col-md-8">
@@ -141,13 +182,13 @@
         <div class="card-header">
           <div class="row">
             <div class="col-8">
-              <?= __('Rubrics')  ?>
+              <?= __('Rubricas')  ?>
             </div>
             <div class="col-4 text-right">
               <?php if ($assessment->status == 'preparation'): ?>
                 <button class="btn btn-sm btn-secondary" type="button" data-toggle="modal" data-target="#modalAddRubric">
                   <i class="fas fa-plus"></i>
-                  <?= __('Add') ?>
+                  <?= __('Adicionar') ?>
                 </button>
               <?php endif; ?>
             </div>
@@ -171,8 +212,8 @@
                   ],
                   [
                     'class' => 'btn btn-sm btn-danger',
-                    'title' => __('Delete assessment'),
-                    'confirm' => __('Are you sure?'),
+                    'title' => __('Excluir rubrica'),
+                    'confirm' => __('Você tem certeza?'),
                     'method' => 'delete',
                     'escape' => false,
                   ]
@@ -192,8 +233,8 @@
     <div class="modal-content">
       <?= $this->Form->create(null, ['url' => ['controller' => 'Assessments', 'action' => 'addRubric']]); ?>
       <div class="modal-header">
-        <h5 class="modal-title"><?= __('Select a rubric') ?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="<?= __('Close') ?>">
+        <h5 class="modal-title"><?= __('Selecione uma rubrica') ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?= __('Fechar') ?>">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -201,7 +242,7 @@
         <?= $this->Form->control(
             'rubric',
             [
-                'label' => __('Rubric'),
+                'label' => __('Rubrica'),
                 'required' => true,
                 'options' => $rubrics,
                 'class' => 'form-control',
@@ -213,7 +254,7 @@
         <?= $this->Form->control(
           'weight',
           [
-            'label' => __('Weight'),
+            'label' => __('Peso'),
             'required' => true,
             'type' => 'number',
             'class' => 'form-control',
@@ -225,8 +266,8 @@
         <?= $this->Form->hidden('assessment_id', ['value' => $assessment->id]); ?>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success"><?= __('Add') ?></button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Cancel') ?></button>
+        <button type="submit" class="btn btn-success"><?= __('Adicionar') ?></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Cancelar') ?></button>
       </div>
       <?= $this->Form->end();  ?>
     </div>
@@ -238,8 +279,8 @@
     <div class="modal-content">
       <?= $this->Form->create(null, ['url' => ['controller' => 'Assessments', 'action' => 'changeScales']]); ?>
       <div class="modal-header">
-        <h5 class="modal-title"><?= __('Change the values of the labels ') ?></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="<?= __('Close') ?>">
+        <h5 class="modal-title"><?= __('Alterar os valores das etiquetas') ?></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?= __('Fechar') ?>">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -248,9 +289,9 @@
           <div class="row mt-2">
             <div class="col-4 col-md-4">
               <?php if($index == 0): ?>
-                <?= __('Lowest') ?>
+                <?= __('Menor') ?>
               <?php elseif ($index == count(json_decode($assessment->labels))-1): ?>
-                <?= __('Highest') ?>
+                <?= __('Maior') ?>
               <?php endif; ?>
             </div>
             <div class="col-8 col-md-8">
@@ -272,8 +313,8 @@
         <?= $this->Form->hidden('assessment_id', ['value' => $assessment->id]); ?>
       </div>
       <div class="modal-footer">
-        <button type="submit" class="btn btn-success"><?= __('Change') ?></button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Cancel') ?></button>
+        <button type="submit" class="btn btn-success"><?= __('Alterar') ?></button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><?= __('Cancelar') ?></button>
       </div>
       <?= $this->Form->end();  ?>
     </div>

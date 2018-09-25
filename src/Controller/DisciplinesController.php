@@ -58,16 +58,16 @@ class DisciplinesController extends AppController
             $discipline->user_id = $this->Auth->user('id');
 
             $team = $this->Disciplines->Teams->newEntity();
-            $team->name = "Default team";
-            $team->description = "Default team";
+            $team->name = __('Turma padrão');
+            $team->description = __('Turma padrão');
 
             $discipline->teams = [$team];
 
             if ($this->Disciplines->save($discipline)) {
-                $this->Flash->success(__('Saved successfully'));
+                $this->Flash->success(__('Salvo com sucesso.'));
                 return $this->redirect(['action' => 'index']);
             }
-            $this->Flash->error(__('An error has occurred'));
+            $this->Flash->error(__('Ocorreu um erro.'));
         }
         $this->set('discipline', $discipline);
     }
@@ -88,15 +88,16 @@ class DisciplinesController extends AppController
         if ($this->request->is(['post', 'put'])) {
             $this->Disciplines->patchEntity($discipline, $this->request->getData());
 
+            //Verificar no isAuthorized
             if ($discipline->user_id != $this->Auth->user('id')) {
-                throw new AuthSecurityException(__('You don\'t have permission to change this record'));
+                throw new AuthSecurityException(__('Você não tem permissão para acessar este registro.'));
             }
 
             if ($this->Disciplines->save($discipline)) {
-                $this->Flash->success(__('Saved successfully'));
+                $this->Flash->success(__('Salvo com sucesso.'));
                 return $this->redirect($session->read('App.referer'));
             }
-            $this->Flash->error(__('An error has occurred'));
+            $this->Flash->error(__('Ocorreu um erro.'));
         }
         $this->set('discipline', $discipline);
     }
@@ -109,17 +110,17 @@ class DisciplinesController extends AppController
         $discipline = $this->Disciplines->findById($id)->where(['user_id' => $this->Auth->user('id')])->firstOrFail();
         if ($this->request->is('delete')) {
             if ($discipline->user_id != $this->Auth->user('id')) {
-                throw new AuthSecurityException(__('You do not have permission to change this record'));
+                throw new AuthSecurityException(__('Você não tem permissão para acessar este registro.'));
             }
 
             $discipline->deleted = true;
 
             if ($this->Disciplines->save($discipline)) {
-                $this->Flash->success(__('Deleted successfully'));
+                $this->Flash->success(__('Excluído com sucesso.'));
                 return $this->redirect(['action' => 'index']);
             }
         }
-        $this->Flash->error(__('An error has occurred'));
+        $this->Flash->error(__('Ocorreu um erro.'));
         return $this->redirect(['action' => 'controls', $id]);
     }
 
@@ -136,7 +137,7 @@ class DisciplinesController extends AppController
             ->firstOrFail();
 
         if ($discipline->user_id != $this->Auth->user('id')) {
-            throw new AuthSecurityException(__('You don\'t have permission to change this record'));
+            throw new AuthSecurityException(__('Você não tem permissão para acessar este registro.'));
         }
 
         $users_count = TableRegistry::get('Teams')

@@ -8,7 +8,7 @@
       </div>
       <div class="col-3 col-md-4 text-right">
          <?=$this->Html->link(
-         '<i class="fas fa-pencil-alt"></i> <span class="not-small">' . __('Edit') . '</span>',
+         '<i class="fas fa-pencil-alt"></i> <span class="not-small">' . __('Editar') . '</span>',
          [
             'controller' => 'Disciplines',
             'action' => 'edit',
@@ -16,12 +16,12 @@
          ],
          [
             'class' => 'btn btn-sm btn-warning',
-            'title' => __('Edit discipline'),
+            'title' => __('Editar disciplina'),
             'escape' => false,
          ]
          ); ?>
          <?=$this->Form->postLink(
-         '<i class="fas fa-trash-alt"></i> <span class="not-small">' . __('Delete') . '</span>',
+         '<i class="fas fa-trash-alt"></i> <span class="not-small">' . __('Excluir') . '</span>',
          [
             'controller' => 'Disciplines',
             'action' => 'delete',
@@ -29,8 +29,8 @@
          ],
          [
             'class' => 'btn btn-sm btn-danger',
-            'title' => __('Delete discipline'),
-            'confirm' => __('Are you sure?'),
+            'title' => __('Excluir disciplina'),
+            'confirm' => __('Você tem certeza?'),
             'method' => 'delete',
             'escape' => false,
          ]
@@ -45,13 +45,13 @@
                   <div class="row">
                      <div class="col-8">
                         <h5 class="card-title">
-                           <?=__('Users'); ?>
+                           <?=__('Usuários'); ?>
 
                         </h5>
                      </div>
                      <div class="col-4 text-right">
                         <?=$this->Html->link(
-                        '<i class="fas fa-plus"></i> <span class="not-small">' . __('Invite users') . '</span>',
+                        '<i class="fas fa-plus"></i> <span class="not-small">' . __('Convidar usuários') . '</span>',
                         [
                            'controller' => 'Disciplines',
                            'action' => 'invite',
@@ -59,7 +59,7 @@
                         ],
                         [
                            'class' => 'btn btn-sm btn-success',
-                           'title' => __('Invite users'),
+                           'title' => __('Convidar usuários'),
                            'escape' => false,
                         ]
                         ); ?>
@@ -70,7 +70,7 @@
             <div class="card-body">
                 <table class="table table-striped table-hover table-sm">
                     <tbody>
-                        
+
                     </tbody>
                 </table>
 

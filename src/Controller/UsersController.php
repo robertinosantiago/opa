@@ -31,7 +31,7 @@ class UsersController extends AppController
                 $this->Auth->setUser($auth);
                 return $this->redirect($this->Auth->redirectUrl());
             }
-            $this->Flash->error(__('Invalid credentials.'));
+            $this->Flash->error(__('Credenciais inválidas.'));
         }
         $this->set(compact('user'));
 
@@ -54,7 +54,7 @@ class UsersController extends AppController
         if ($this->request->is('post')) {
             $this->Users->patchEntity($user, $this->request->getData());
             if ($this->Users->save($user)) {
-                $this->Flash->success('Cadastrado');
+                $this->Flash->success('Cadastrado com sucesso');
                 return $this->redirect(['action' => 'login']);
             }
         }
@@ -64,7 +64,7 @@ class UsersController extends AppController
 
     public function logout()
     {
-        $this->Flash->success('You are now logged out.');
+        $this->Flash->success('Obrigado por acessar o OPA.');
         $this->request->getSession()->delete('Auth.User');
         return $this->redirect($this->Auth->logout());
     }

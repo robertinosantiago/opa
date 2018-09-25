@@ -31,34 +31,34 @@
   <aside class="sidebar">
     <ul class="sidebar-menu list-unstyled">
       <li>
-        <a class="menu-link" href="<?php echo $this->Url->build('/Home'); ?>" title="<?php echo __('Home'); ?>">
+        <a class="menu-link" href="<?php echo $this->Url->build('/Home'); ?>" title="<?php echo __('Início'); ?>">
           <i class="fas fa-home"></i>
           <span class="menu-label">
-            <?php echo __('Home'); ?>
+            <?php echo __('Início'); ?>
           </span>
         </a>
       </li>
       <li>
-        <a class="menu-link" href="<?php echo $this->Url->build('/Assessments'); ?>" title="<?php echo __('Assessments'); ?>">
+        <a class="menu-link" href="<?php echo $this->Url->build('/Assessments'); ?>" title="<?php echo __('Avaliação'); ?>">
           <i class="fas fa-clipboard-list"></i>
           <span class="menu-label">
-            <?php echo __('Assessments'); ?>
+            <?php echo __('Avaliação'); ?>
           </span>
         </a>
       </li>
       <li>
-        <a class="menu-link" href="<?php echo $this->Url->build('/Disciplines'); ?>" title="<?php echo __('Disciplines'); ?>">
+        <a class="menu-link" href="<?php echo $this->Url->build('/Disciplines'); ?>" title="<?php echo __('Disciplinas'); ?>">
           <i class="fas fa-school"></i>
           <span class="menu-label">
-            <?php echo __('Disciplines'); ?>
+            <?php echo __('Disciplinas'); ?>
           </span>
         </a>
       </li>
       <li>
-        <a class="menu-link" href="<?php echo $this->Url->build('/Rubrics'); ?>" title="<?php echo __('Rubrics'); ?>">
+        <a class="menu-link" href="<?php echo $this->Url->build('/Rubrics'); ?>" title="<?php echo __('Rubricas'); ?>">
           <i class="fas fa-file-alt"></i>
           <span class="menu-label">
-            <?php echo __('Rubrics'); ?>
+            <?php echo __('Rubricas'); ?>
           </span>
         </a>
       </li>

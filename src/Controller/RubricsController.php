@@ -72,11 +72,11 @@ class RubricsController extends AppController
       $rubric = $this->Rubrics->patchEntity($rubric, $this->request->getData());
       $rubric->user_id = $this->Auth->user('id');
       if ($this->Rubrics->save($rubric)) {
-        $this->Flash->success(__('The rubric has been saved.'));
+        $this->Flash->success(__('Salvo com sucesso.'));
 
         return $this->redirect(['action' => 'index']);
       }
-      $this->Flash->error(__('The rubric could not be saved. Please, try again.'));
+      $this->Flash->error(__('Ocorreu um erro.'));
     }
 
 
@@ -98,11 +98,11 @@ class RubricsController extends AppController
     if ($this->request->is(['patch', 'post', 'put'])) {
       $rubric = $this->Rubrics->patchEntity($rubric, $this->request->getData());
       if ($this->Rubrics->save($rubric)) {
-        $this->Flash->success(__('The rubric has been saved.'));
+        $this->Flash->success(__('Salvo com sucesso.'));
 
         return $this->redirect(['action' => 'index']);
       }
-      $this->Flash->error(__('The rubric could not be saved. Please, try again.'));
+      $this->Flash->error(__('Ocorreu um erro.'));
     }
     $users = $this->Rubrics->Users->find('list', ['limit' => 200]);
     $this->set(compact('rubric', 'users'));
@@ -120,9 +120,9 @@ class RubricsController extends AppController
     $this->request->allowMethod(['post', 'delete']);
     $rubric = $this->Rubrics->get($id);
     if ($this->Rubrics->delete($rubric)) {
-      $this->Flash->success(__('The rubric has been deleted.'));
+      $this->Flash->success(__('Excluído com sucesso.'));
     } else {
-      $this->Flash->error(__('The rubric could not be deleted. Please, try again.'));
+      $this->Flash->error(__('Ocorreu um erro.'));
     }
 
     return $this->redirect(['action' => 'index']);

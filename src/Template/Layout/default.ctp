@@ -40,19 +40,19 @@
           <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
               <a class="nav-link" href="<?php echo $this->Url->build('/'); ?>">
-                <?php echo __('Home'); ?>
+                <?php echo __('Início'); ?>
                 <span class="sr-only">(current)</span>
               </a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">
-                <?php echo __('Features'); ?>
+                <?php echo __('Funcionalidades'); ?>
               </a>
             </li>
           </ul>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <?php echo $this->Html->link(__('Login'), ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link']); ?>
+              <?php echo $this->Html->link(__('Acessar'), ['controller' => 'Users', 'action' => 'login'], ['class' => 'nav-link']); ?>
             </li>
           </ul>
         </div>

@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col">
             <h2>
-                <?= __('Teams') ?>
+                <?= __('Turmas') ?>
             </h2>
             <h5><?= $discipline->name; ?></h5>
         </div>
@@ -21,7 +21,7 @@
                      </div>
                      <div class="col-4 text-right">
                         <?=$this->Html->link(
-                        '<i class="fas fa-plus"></i> <span class="not-small">' . __('Invite users') . '</span>',
+                        '<i class="fas fa-plus"></i> <span class="not-small">' . __('Convidar usuários') . '</span>',
                         [
                            'controller' => 'Teams',
                            'action' => 'invite',
@@ -29,7 +29,7 @@
                         ],
                         [
                            'class' => 'btn btn-sm btn-success',
-                           'title' => __('Invite users'),
+                           'title' => __('Convidar usuários'),
                            'escape' => false,
                         ]
                         ); ?>
@@ -40,7 +40,7 @@
             <div class="card-body">
                 <table class="table table-striped table-hover table-sm">
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>

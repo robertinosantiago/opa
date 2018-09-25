@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col">
-        <h1><?=__('Discipline');?></h1>
+        <h1><?=__('Disciplina');?></h1>
         </div>
     </div>
     <div class="row">
@@ -15,7 +15,7 @@
             <?= $this->Form->control(
                 'name',
                 [
-                    'label' => __('Name'),
+                    'label' => __('Nome'),
                     'required' => true,
                     'class' => 'form-control',
                     'templates' => [
@@ -25,13 +25,13 @@
             ); ?>
 
             <div class="form-group">
-              <label for="editor"><?php echo __('Description'); ?></label>
+              <label for="editor"><?php echo __('Descrição'); ?></label>
               <div id="editor"></div>
               <?php echo $this->Form->hidden('description', ['id' => 'description']) ?>
             </div>
 
             <button type="submit" class="btn btn-success">
-              <?php echo __('Save'); ?>
+              <?php echo __('Salvar'); ?>
             </button>
 
             <?= $this->Form->end(); ?>

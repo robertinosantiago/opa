@@ -365,4 +365,17 @@ td.actions {
   font-size: 1rem;
 }
 
+.nav-assessment .nav-link {
+  border-radius: 100%;
+  background: #e0e0e0;
+  display: inline-block;
+  line-height: 70px;
+  text-decoration: none;
+  color: #4f5f6f;
+}
+.nav-assessment .nav-link.active {
+  background: #4f5f6f;
+  color: #e1e1e1;
+}
+
 /*# sourceMappingURL=webroot/css/main.css.map */

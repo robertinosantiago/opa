@@ -23,10 +23,10 @@ $userInfo = $session->read('userInfo');
                 <?= $this->UserInfo->avatar(); ?>
                 <p><strong class="user-name"><small><?= $this->UserInfo->fullName(); ?></small></strong></p>
               </div>
-              <a class="dropdown-item" href="#"><?=__('Profile'); ?></a>
-              <a class="dropdown-item" href="#"><?=__('Settings'); ?></a>
+              <a class="dropdown-item" href="#"><?=__('Perfil'); ?></a>
+              <a class="dropdown-item" href="#"><?=__('Configurações'); ?></a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="<?=$this->Url->build('/users/logout'); ?>"><?=__('Logout'); ?></a>
+              <a class="dropdown-item" href="<?=$this->Url->build('/users/logout'); ?>"><?=__('Sair'); ?></a>
             </div>
           </li>
         </ul>

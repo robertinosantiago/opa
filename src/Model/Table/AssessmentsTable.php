@@ -5,6 +5,11 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use Cake\Datasource\EntityInterface;
+use ArrayObject;
+use Cake\Log\Log;
+
 
 /**
  * Assessments Model
@@ -41,6 +46,7 @@ class AssessmentsTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Uploadable');
 
         $this->belongsTo('Teams', [
             'foreignKey' => 'team_id',
@@ -86,8 +92,8 @@ class AssessmentsTable extends Table
             ->allowEmpty('labels');
 
         $validator
-            ->scalar('file')
-            ->maxLength('file', 255)
+            // ->scalar('file')
+            // ->maxLength('file', 255)
             ->allowEmpty('file');
 
         $validator
@@ -127,5 +133,14 @@ class AssessmentsTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+      Log::write('debug', 'beforeSave');
+      Log::write('debug', $entity);
+      if (isset($entity->file['name']) && !empty($entity->file['name'])) {
+        Log::write('debug', 'tentando fazer upload arquivo');
+        $entity->file = $this->upload($entity->file);
+      }
     }
 }

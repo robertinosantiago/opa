@@ -19,7 +19,7 @@ class TeamsController extends AppController
         $discipline = TableRegistry::get('Disciplines')->get($discipline_id);
 
         if ($discipline->user_id != $this->Auth->user('id')) {
-            throw new AuthSecurityException(__('You don\'t have permission to change this record'));
+            throw new AuthSecurityException(__('Você não tem permissão para acessar este registro.'));
         }
 
         $teams = $this->Teams->find('all')
