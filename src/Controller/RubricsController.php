@@ -190,13 +190,99 @@ class RubricsController extends AppController
 
   }
 
+  public function listRubricsAjax() {
+    $this->request->allowMethod(['get', 'ajax']);
+
+    $query = $this->request->query();
+
+    $term = (array_key_exists('term', $query)) ? $query['term'] : '';
+
+    $rubrics = $this->Rubrics->find('all')
+      ->where([
+        'Rubrics.user_id' => $this->Auth->user('id'),
+        'OR' => [
+          'Rubrics.title LIKE' => '%' . $term .'%',
+          'Rubrics.description LIKE' => '%' . $term .'%',
+        ]
+      ])
+      ->order(['Rubrics.title' => 'asc']);
+
+      $data = array();
+      foreach ($rubrics as $rubric) {
+        $data[] = ['id' => $rubric->id, 'name' => $rubric->full_info];
+      }
+
+      $this->set(['data' => $data, '_serialize' => 'data']);
+
+  }
+
+  public function ajaxGetInfo() {
+    $this->viewBuilder()->layout('ajax');
+
+    $this->request->allowMethod(['get', 'ajax']);
+
+    $query = $this->request->getData();
+    $id = (array_key_exists('id', $query)) ? $query['id'] : null;
+
+    $rubric = null;
+
+    if ($id != null) {
+      $rubric = $this->Rubrics->find('all')
+         ->where([
+           'Rubrics.user_id' => $this->Auth->user('id'),
+           'Rubrics.id' => $id
+         ])
+         ->first();
+    }
+    $this->set('rubric', $rubric);
+  }
+
+  public function ajaxSave() {
+    //$this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post', 'ajax']);
+
+    $data = $this->request->getData();
+
+    $rubric = $this->Rubrics->newEntity();
+    $rubric->title = $data['title'];
+    $rubric->description = $data['description'];
+    $rubric->user_id = $this->Auth->user('id');
+
+    if ($this->Rubrics->save($rubric)) {
+      $this->set(['rubric' => $rubric, '_serialize' => 'rubric']);
+    }
+
+  }
+
+  public function rubricsTable() {
+    $this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post', 'ajax']);
+
+    $query = $this->request->query();
+    $search = (array_key_exists('search', $query)) ? $query['search'] : '';
+    $start = (array_key_exists('start', $query)) ? $query['start'] : 1;
+    $length = (array_key_exists('length', $query)) ? $query['length'] : 2;
+
+    $rubrics= $this->Rubrics->find('table', [
+      'user_id' => $this->Auth->user('id'),
+      'search' => $search,
+      'start' => $start,
+      'length' => $length
+    ]);
+
+    $pages = ceil($rubrics->count() / $length);
+
+    $this->set(compact('pages', 'rubrics', 'start', 'search'));
+
+  }
+
   /**
   * @param $user
   */
   public function isAuthorized($user)
   {
     $action = $this->request->getParam('action');
-    if (in_array($action, ['index', 'add', 'saveInfoRubric', 'saveQuestionsRubric', 'loadQuestionsByRubric'])) {
+    if (in_array($action, ['index', 'add', 'saveInfoRubric', 'saveQuestionsRubric', 'loadQuestionsByRubric', 'rubricsTable'])) {
       return true;
     }
     return false;

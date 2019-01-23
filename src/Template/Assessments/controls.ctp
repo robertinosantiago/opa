@@ -1,66 +1,60 @@
 <div class="container-fluid">
+
   <div class="row">
-    <div class="col">
-      <ul class="nav justify-content-center nav-assessment">
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="not-small">
-              <?= __('Passo'); ?>
-            </span>
-            1
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="#">
-            <span class="not-small">
-              <?= __('Passo'); ?>
-            </span>
-            2
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">
-            <span class="not-small">
-              <?= __('Passo'); ?>
-            </span>
-            3
-          </a>
-        </li>
-      </ul>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-12 col-md-8">
+    <div class="col-12 col-md-12 col-lg-7">
       <h2>
         <?=$assessment->title; ?>
         <?php if($assessment->status == 'preparation'): ?>
-          <span class="badge badge-success"><?= __('Em preparação') ?></span>
+          <small><span class="badge badge-success"><?= __('Em preparação') ?></span></small>
         <?php elseif($assessment->status == 'open'): ?>
-          <span class="badge badge-warning"><?= __('Aberto') ?></span>
+          <small><span class="badge badge-warning"><?= __('Aberto') ?></span></small>
         <?php else: ?>
-          <span class="badge badge-danger"><?= __('Encerrado') ?></span>
+          <small><span class="badge badge-danger"><?= __('Encerrado') ?></span></small>
         <?php endif; ?>
       </h2>
     </div>
-    <div class="col-12 col-md-4 text-right">
-    <?php if ($assessment->status == 'preparation' && count($assessment->assessment_rubrics) != 0): ?>
-      <?=$this->Form->postLink(
-        '<i class="fas fa-share-square"></i> ' . __('Publicar'),
+    <div class="col-12 col-md-12 col-lg-5 text-right">
+
+    <?php if ($assessment->status == 'open' && count($assessment->assessment_rubrics) != 0): ?>
+      <?=$this->Html->link(
+        '<i class="fas fa-user-friends"></i> ' . __('Atribuir pares'),
         [
           'controller' => 'Assessments',
-          'action' => 'publish',
+          'action' => 'peers',
           $assessment->id,
         ],
         [
-          'class' => 'btn btn-sm btn-success',
-          'title' => __('Publicar a avaliação'),
-          'confirm' => __('Você tem certeza?'),
-          'method' => 'post',
+          'class' => 'btn btn-sm btn-info',
+          'title' => __('Atribuir pares avaliadores'),
           'escape' => false,
         ]
       ); ?>
+      <button class="btn btn-sm btn-success" disabled><i class="fas fa-share-square"></i> <?= __('Publicar'); ?></button>
+      <button class="btn btn-sm btn-warning" disabled><i class="fas fa-pencil-alt"></i> <?= __('Editar'); ?></button>
+      <button class="btn btn-sm btn-danger" disabled><i class="fas fa-trash-alt"></i> <?= __('Excluir'); ?></button>
     <?php endif; ?>
+
     <?php if ($assessment->status == 'preparation'): ?>
+      <button class="btn btn-sm btn-info" disabled><i class="fas fa-user-friends"></i> <?= __('Atribuir pares'); ?></button>
+      <?php if (count($assessment->assessment_rubrics) != 0): ?>
+        <?=$this->Form->postLink(
+          '<i class="fas fa-share-square"></i> ' . __('Publicar'),
+          [
+            'controller' => 'Assessments',
+            'action' => 'publish',
+            $assessment->id,
+          ],
+          [
+            'class' => 'btn btn-sm btn-success',
+            'title' => __('Publicar a avaliação'),
+            'confirm' => __('Você tem certeza?'),
+            'method' => 'post',
+            'escape' => false,
+          ]
+        ); ?>
+      <?php else: ?>
+        <button class="btn btn-sm btn-success" disabled><i class="fas fa-share-square"></i> <?= __('Publicar'); ?></button>
+      <?php endif; ?>
       <?=$this->Html->link(
         '<i class="fas fa-pencil-alt"></i> ' . __('Editar'),
         [
@@ -97,47 +91,68 @@
     <div class="col">
         <div class="card">
           <div class="card-body">
-            <div class="row">
-              <div class="col-12 col-md-6">
-                <label for="team" class="mb-0"><?= __('Turma') ?> </label>
-                <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->name ?>">
-              </div>
+            <div class="row mb-2">
               <div class="col-12 col-md-6">
                 <label for="team" class="mb-0"><?= __('Disciplina') ?> </label>
-                <input type="text" readonly class="form-control-plaintext pt-0" id="team" value="<?= $assessment->team->discipline->name ?>">
-              </div>
-            </div>
-
-            <div class="row">
-              <div class="col-12 col-md-4">
-                <div class="form-group">
-                  <label for="startAt" class="mb-0"><?= __('Início') ?></label>
-                  <input type="text" readonly class="form-control-plaintext pt-0" id="startAt" value="<?= $assessment->startAt ?>">
-                </div>
+                <input type="text" readonly class="form-control" id="team" value="<?= $assessment->team->discipline->name ?>">
               </div>
               <div class="col-12 col-md-4">
-                <div class="form-group">
-                  <label for="endAt" class="mb-0"><?= __('Encerramento') ?> </label>
-                  <input type="text" readonly class="form-control-plaintext pt-0" id="endAt" value="<?= $assessment->endAt ?>">
-                </div>
+                <label for="team" class="mb-0"><?= __('Turma') ?> </label>
+                <input type="text" readonly class="form-control" id="team" value="<?= $assessment->team->name ?>">
               </div>
-              <div class="col-12 col-md-4">
+              <div class="col-12 col-md-2">
                 <div class="form-group">
                   <label for="score" class="mb-0"><?= __('Nota máxima') ?> </label>
-                  <input type="text" readonly class="form-control-plaintext pt-0" id="score" value="<?= $assessment->maximum_score ?>">
+                  <input type="text" readonly class="form-control" id="score" value="<?= $assessment->maximum_score ?>">
                 </div>
               </div>
             </div>
 
-            
+            <div class="row mb-2">
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="startAt" class="mb-0"><?= __('Início da submissão') ?></label>
+                  <input type="text" readonly class="form-control" id="startAt" value="<?= $assessment->startAt->i18nFormat($dateFormat) ?>">
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="endAt" class="mb-0"><?= __('Encerramento da submissão') ?> </label>
+                  <input type="text" readonly class="form-control" id="endAt" value="<?= $assessment->endAt->i18nFormat($dateFormat) ?>">
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="startassessment" class="mb-0"><?= __('Início da avaliação') ?></label>
+                  <input type="text" readonly class="form-control" id="startassessment" value="<?= $assessment->start_assessment->i18nFormat($dateFormat) ?>">
+                </div>
+              </div>
+              <div class="col-12 col-md-3">
+                <div class="form-group">
+                  <label for="endassessment" class="mb-0"><?= __('Encerramento da avaliação') ?> </label>
+                  <input type="text" readonly class="form-control" id="endassessment" value="<?= $assessment->end_assessment->i18nFormat($dateFormat) ?>">
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12">
+                <?php if($assessment->file): ?>
+                  <a class="btn btn-info" title="<?= __('Baixar anexo'); ?>" href="<?= $this->Url->build(['controller' => 'Assessments', 'action' => 'getFile', $assessment->file]); ?>">
+                    <i class="fas fa-download"></i> <?= __('Baixar anexo') ?>
+                  </a>
+                <?php endif; ?>
+              </div>
+            </div>
+
+
           </div>
         </div>
     </div>
   </div>
 
 
-  <div class="row">
-    <div class="col-12 col-md-6">
+  <div class="row mb-3">
+    <div class="col-12">
       <div class="card">
         <div class="card-header">
           <div class="row">
@@ -146,7 +161,7 @@
             </div>
             <div class="col-4 text-right">
               <?php if ($assessment->status == 'preparation'): ?>
-                <button class="btn btn-sm btn-secondary"  type="button" data-toggle="modal" data-target="#modalChangeScales">
+                <button title="<?= __('Alterar') ?>" class="btn btn-sm btn-secondary"  type="button" data-toggle="modal" data-target="#modalChangeScales">
                   <i class="fas fa-pencil-alt"></i>
                   <?= __('Alterar') ?>
                 </button>
@@ -155,29 +170,30 @@
           </div>
         </div>
         <div class="card-body">
-
+          <div class="row mb-3">
+            <div class="col-12 text-center">
+              <?= __('Menor') ?> <i class="fas fa-arrow-right"></i> <?= __('Maior') ?>
+            </div>
+          </div>
           <div class="row">
-            <div class="col list-scales">
-              <?php foreach(json_decode($assessment->labels) as $index => $label): ?>
-                <div class="row mt-2">
-                  <div class="col-4 col-md-4">
-                    <?php if($index == 0): ?>
-                      <?= __('Menor') ?>
-                    <?php elseif ($index == count(json_decode($assessment->labels))-1): ?>
-                      <?= __('Maior') ?>
-                    <?php endif; ?>
-                  </div>
-                  <div class="col-8 col-md-8">
-                    <?= $label ?>
-                  </div>
-                </div>
-              <?php endforeach; ?>
+            <div class="col-12">
+              <ul class="likert">
+                <?php foreach(json_decode($assessment->labels) as $index => $label): ?>
+                  <li>
+                    <span><i class="fas fa-circle"></i></span>
+
+                    <span><?= $label ?></span>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="col-12 col-md-6">
+  </div>
+  <div class="row">
+    <div class="col-12">
       <div class="card">
         <div class="card-header">
           <div class="row">
@@ -195,29 +211,45 @@
           </div>
         </div>
         <div class="card-body">
+          <?php if ($assessment->assessment_rubrics): ?>
+            <div class="row border-bottom">
+              <div class="col-8">
+                <?= __('Rubrica') ?>
+              </div>
+              <div class="col-2 text-center">
+                <?= __('Peso') ?>
+              </div>
+              <div class="col-2">
+
+              </div>
+            </div>
+          <?php endif; ?>
           <?php foreach($assessment->assessment_rubrics as $ar): ?>
             <div class="row py-2 list-rubrics">
-              <div class="col-10">
-                [<?= $ar->weight; ?>]
-                <?= $ar->rubric->title; ?>
+              <div class="col-12 col-md-8">
+                <strong><?= $ar->rubric->title; ?></strong>
+                <small><?= $ar->rubric->description ?></small>
               </div>
-              <div class="col-2 text-right">
+              <div class="col-6 col-md-2 text-center">
+                <?= $ar->weight; ?>
+              </div>
+              <div class="col-6 col-md-2 text-right">
                 <?php if ($assessment->status == 'preparation'): ?>
-                <?=$this->Form->postLink(
-                  '<i class="fas fa-trash-alt"></i> ',
-                  [
-                    'controller' => 'Assessments',
-                    'action' => 'removeRubric',
-                    $ar->id,
-                  ],
-                  [
-                    'class' => 'btn btn-sm btn-danger',
-                    'title' => __('Excluir rubrica'),
-                    'confirm' => __('Você tem certeza?'),
-                    'method' => 'delete',
-                    'escape' => false,
-                  ]
-                ); ?>
+                  <?=$this->Form->postLink(
+                    '<i class="fas fa-trash-alt"></i> ' . __('Remover'),
+                    [
+                      'controller' => 'Assessments',
+                      'action' => 'removeRubric',
+                      $ar->id,
+                    ],
+                    [
+                      'class' => 'btn btn-sm btn-danger',
+                      'title' => __('Excluir rubrica'),
+                      'confirm' => __('Você tem certeza?'),
+                      'method' => 'delete',
+                      'escape' => false,
+                    ]
+                  ); ?>
                 <?php endif; ?>
               </div>
             </div>
@@ -225,6 +257,7 @@
         </div>
       </div>
     </div>
+
   </div>
 </div>
 
@@ -320,3 +353,17 @@
     </div>
   </div>
 </div>
+
+<?php $this->start('css'); ?>
+<style media="screen">
+.likert::before {
+  left: <?= (99 / count(json_decode($assessment->labels)))/2  ?>%;
+  width: <?= (count(json_decode($assessment->labels)) - 1) * (99 / count(json_decode($assessment->labels)))  ?>%;
+}
+
+.likert li {
+  width: <?= (95 / count(json_decode($assessment->labels)))  ?>%;
+}
+
+</style>
+<?php $this->end(); ?>

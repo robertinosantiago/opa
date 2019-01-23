@@ -6,8 +6,11 @@
   width: 100%;
   display: flex;
   z-index: 1030;
-  padding-right: 15px;
-  @media(min-width: 768px) { padding-right: 30px }
+  padding: 0px;
+
+  @media(min-width: 768px) {
+    // padding-right: 30px
+  }
   @media print { display: none; }
   font-size: $navbar-font-size;
   background-color: $navbar-background;
@@ -28,5 +31,16 @@
   .user-name {
     font-size: 0.8rem;
   }
-
+  &.navbar-expand {
+    flex-flow: column;
+  }
+  .container-fluid {
+    padding: .5rem 1rem;
+  }
+  .navbar-fullname {
+    background-color: $navbar-color;
+    color: $navbar-background;
+    font-size: 8pt;
+    padding: 2px 8px;
+  }
 }

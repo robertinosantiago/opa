@@ -1,0 +1,12 @@
+.required {
+  > label {
+    &:after {
+        content: ' *';
+        color: #C3232D;
+    }
+  }
+}
+
+button:disabled, button[disabled] {
+  cursor: not-allowed;
+}

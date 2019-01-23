@@ -76,4 +76,5 @@ class TeamUsersTable extends Table
 
         return $rules;
     }
+
 }

@@ -136,6 +136,8 @@ class DisciplinesController extends AppController
             ->contain(['Teams' => ['TeamUsers' => ['Users']]])
             ->firstOrFail();
 
+        
+
         if ($discipline->user_id != $this->Auth->user('id')) {
             throw new AuthSecurityException(__('Você não tem permissão para acessar este registro.'));
         }
@@ -147,6 +149,31 @@ class DisciplinesController extends AppController
             ->count();
         $this->set('discipline', $discipline);
         $this->set('users_count', $users_count);
+
+    }
+
+    public function newAjax() {
+      $this->request->allowMethod(['post', 'ajax']);
+      $this->viewBuilder()->layout('ajax');
+
+      $data = $this->request->getData();
+
+      $discipline = $this->Disciplines->newEntity();
+      $discipline->name = $data['name'];
+      $discipline->description = $data['description'];
+      $discipline->user_id = $this->Auth->user('id');
+
+      if ($this->Disciplines->save($discipline)) {
+        $disciplines = $this->Disciplines
+            ->find('list')
+            ->where(['Disciplines.user_id' => $this->Auth->user('id'), 'Disciplines.deleted' => false])
+            ->order(['Disciplines.name' => 'ASC']);
+
+        $this->set(['disciplines' => $disciplines, 'discipline' => $discipline, '_serialize' => ['disciplines', 'discipline']]);
+      } else {
+        throw new \Exception("Error Processing Request", 1);
+
+      }
 
     }
 
@@ -167,7 +194,7 @@ class DisciplinesController extends AppController
     {
         $action = $this->request->getParam('action');
         // The add and tags actions are always allowed to logged in users.
-        if (in_array($action, ['index', 'add', 'edit', 'delete', 'controls'])) {
+        if (in_array($action, ['index', 'add', 'edit', 'delete', 'controls', 'newAjax'])) {
             return true;
         }
 

@@ -1,3 +1,6 @@
+body.not-logged {
+  background-color: #E5E5E5;
+}
 .not-logged {
   main {
     &.content {
@@ -37,9 +40,9 @@
       &.reset-password {
         margin-top: 15px;
       }
-      
+
     }
-      
-      
+
+
   }
 }

@@ -50,6 +50,7 @@ class AppController extends Controller
   $this->loadComponent('Paginator');
   $this->loadComponent('Auth', [
    'authorize' => 'Controller',
+   'authError' => __('Você não está autorizado a acessar este conteúdo'),
    'authenticate' => [
     'Form' => [
      'fields' => [

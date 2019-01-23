@@ -35,7 +35,7 @@
                             <?=$this->Html->link(
                                 $assessment->title,
                                 ['controller' => 'Assessments', 'action' => 'controls', $assessment->id],
-                                ['class' => '', 'title' => __('Editar a avaliação {0}', $assessment->name)]
+                                ['class' => '', 'title' => __('Editar a avaliação')]
                             ); ?>
                             <?php if($assessment->status == 'preparation'): ?>
                               <span class="badge badge-success"><?= __('Em preparação') ?></span>

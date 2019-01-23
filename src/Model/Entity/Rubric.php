@@ -40,4 +40,21 @@ class Rubric extends Entity
         'user_id' => true,
         'user' => true,
     ];
+
+    protected function _getFullInfo(){
+      return $this->_properties['title'] . ' - ' . $this->getNWordsFromString($this->_properties['description']);
+    }
+
+    public function getNWordsFromString($text,$numberOfWords = 10) {
+      if($text != null) {
+          $text = strip_tags($text);
+          $textArray = explode(" ", $text);
+          if(count($textArray) > $numberOfWords) {
+              return implode(" ",array_slice($textArray, 0, $numberOfWords))."...";
+          }
+          return $text;
+      }
+      return "";
+    }
+
 }

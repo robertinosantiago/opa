@@ -35,7 +35,7 @@
                             <?=$this->Html->link(
                                 $rubric->title,
                                 ['controller' => 'Rubrics', 'action' => 'controls', $rubric->id],
-                                ['class' => '', 'title' => __('Editar a rubrica {0}', $rubric->title)]
+                                ['class' => '', 'title' => __('Editar a rubrica')]
                             ); ?>
                         </td>
                     </tr>

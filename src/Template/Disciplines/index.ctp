@@ -35,7 +35,7 @@
                             <?=$this->Html->link(
                                 $discipline->name,
                                 ['controller' => 'Disciplines', 'action' => 'controls', $discipline->id],
-                                ['class' => '', 'title' => __('Editar a disciplina {0}', $discipline->name)]
+                                ['class' => '', 'title' => __('Editar a disciplina')]
                             ); ?>
                         </td>
                     </tr>
