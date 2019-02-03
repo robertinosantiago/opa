@@ -5,6 +5,7 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\I18n\Time;
 use Cake\ORM\TableRegistry;
+use Cake\ORM\Query;
 use Cake\Log\Log;
 use Cake\Filesystem\File;
 
@@ -310,7 +311,8 @@ class AssessmentsController extends AppController {
         ->get($id, ['contain' => ['Teams' => ['Disciplines', 'TeamUsers' => 'Users']]]);
 
     $users = $assessment->team->team_users;
-    $countStudents = count($users) - 1;
+    $countStudents = count($users) > 0 ? count($users) - 1 : 0;
+    // debug($countStudents);
 
     $this->set(compact('assessment', 'users', 'countStudents'));
   }
@@ -543,7 +545,234 @@ class AssessmentsController extends AppController {
 
     $entities = $peersTable->newEntities($data);
     $result = $peersTable->saveMany($entities, ['validate' => false]);
-    
+
+  }
+
+  /**
+  * Método utilizado para que o par avaliado faça a submissão de sua avaliação.
+  *
+  * @param int $assessment_id Código da avaliação
+  * @param int $submit_id Código da submissão da avaliação
+  */
+  public function submit($assessment_id, $submit_id = null) {
+
+    // TODO: Verificar se está no prazo para enviar a avaliação
+
+    $auTable = TableRegistry::get('AssessmentUsers');
+
+    $assessment = $this->Assessments->get($assessment_id,
+      [
+        'contain' => ['Teams' => ['TeamUsers', 'Disciplines'], 'AssessmentRubrics' => ['Rubrics']],
+        'where' => ['TeamUsers.user_id' => $this->Auth->user('id')]
+      ]
+    );
+
+    if (!$assessment) {
+      $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
+      return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+    }
+
+    $existAssessmentUser = $auTable->find()
+      ->where([
+        'AssessmentUsers.assessment_id' => $assessment->id,
+        'AssessmentUsers.user_id' => $this->Auth->user('id')
+      ])
+      ->first();
+
+    $assessmentUser = false;
+
+    if ($existAssessmentUser) {
+      if (!$existAssessmentUser->draft) {
+        $this->Flash->error(__('Você já respondeu essa avaliação.'));
+        return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+      }
+      $assessmentUser = $existAssessmentUser;
+    }
+
+    $dateFormat = 'dd/MM/yyyy HH:mm';
+    if (strtolower($this->Auth->user('locale')) == 'en'){
+      $dateFormat = 'MM/dd/yyyy hh:mm a';
+    }
+
+
+    if ($this->request->is('post')) {
+      $data = $this->request->getData();
+
+      if (!$existAssessmentUser) {
+        $assessmentUser = $auTable->newEntity();
+      }
+      $assessmentUser->document_text = $data['document_text'];
+      $assessmentUser->user_id = $this->Auth->user('id');
+      $assessmentUser->assessment_id = $assessment->id;
+
+      if ($data['action'] == 'finish')
+        $assessmentUser->draft = false;
+      else {
+        $assessmentUser->draft = true;
+      }
+
+      if (key_exists('attachment', $data) && $data['attachment']['tmp_name'] != '')
+        $assessmentUser->file = $data['attachment'];
+
+      if ($auTable->save($assessmentUser)) {
+        if ($assessmentUser->draft) {
+          $this->Flash->success(__('Sua avaliação foi salva como rascunho.'));
+          return $this->redirect(['action' => 'submit', $assessment->id]);
+        } else {
+          $this->Flash->success(__('Sua avaliação foi enviada com sucesso.'));
+          return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+        }
+      } else {
+        $this->Flash->error(__('Não foi possível salvar sua avaliação.'));
+      }
+
+    }
+
+    $this->set('assessment', $assessment);
+    $this->set('dateFormat', $dateFormat);
+    $this->set('assessmentUser', $assessmentUser);
+
+  }
+
+  /**
+  * Método utilizado para excluir, via Ajax, um arquivo enviado na avaliação.
+  * A exclusão é permitida enquanto a avaliação está em modo rascunho e no
+  * período de submissão.
+  *
+  * Este método está sendo usado em:
+  * - /assessments/submit/$id
+  */
+  public function removeFile() {
+    $this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post', 'delete']);
+
+    $data = $this->request->getData();
+
+    $auTable = TableRegistry::get('AssessmentUsers');
+
+    $assessmentUser = $auTable->find()
+      ->contain(['Assessments'])
+      ->where([
+        'AssessmentUsers.id' => $data['au_id'],
+        'AssessmentUsers.user_id' => $this->Auth->user('id'),
+        'AssessmentUsers.draft' => true,
+        'Assessments.startAt <=' => Time::now(),
+        'Assessments.endAt >=' => Time::now(),
+      ])
+      ->first();
+    $removed = false;
+    if ($assessmentUser) {
+      $dir = ROOT . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR;
+      if (unlink($dir . $assessmentUser->file)) {
+          $assessmentUser->file = '';
+          $removed = $auTable->save($assessmentUser);
+      }
+    }
+    $this->set('removed', $removed);
+  }
+
+  /**
+   * Método utilizado para exibir as submissões que o par avaliador deverá
+   * avaliar
+   *
+   * @param int $id Código da avaliação submetida
+   */
+  public function appraiser($id) {
+    $assessmentUserTable = TableRegistry::get('AssessmentUsers');
+
+    $data = null;
+    if ($this->request->is('post')) {
+      $data = $this->request->getData();
+      $id = $data['assessment_user_id'];
+    }
+
+    $assessmentUser =  $assessmentUserTable
+      ->find()
+      ->join([
+        'Peers' => [
+          'table' => 'peers',
+          'type' => 'inner',
+          'conditions' => [
+            'Peers.user_id = AssessmentUsers.user_id',
+            'Peers.appraiser_id' => $this->Auth->user('id')
+          ]
+        ],
+      ])
+      ->contain([
+        'Peers', 'Users', 'Assessments' => ['AssessmentRubrics' => 'Rubrics', 'Teams' => 'Disciplines']
+      ])
+      ->where([
+        'AssessmentUsers.id' => $id,
+        'AssessmentUsers.draft' => false, //O professor deve habilitar se pode avaliar se estiver no rascunho ainda
+        'Assessments.start_assessment <=' => Time::now(),
+        'Assessments.end_assessment >=' => Time::now(),
+      ])->first();
+
+      if (!$assessmentUser) {
+        $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
+        return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+      }
+
+      if ($this->request->is('post')) {
+        $peerTable = TableRegistry::get('Peers');
+
+        $peer = $peerTable
+          ->find()
+          ->where([
+            'Peers.user_id' => $assessmentUser->user_id,
+            'Peers.appraiser_id' => $this->Auth->user('id'),
+            'Peers.assessment_id' => $assessmentUser->assessment->id
+          ])
+          ->first();
+        $peer->assessment_user_id = $assessmentUser->id;
+        $peerTable->save($peer);
+
+        $assessmentPeerTable = TableRegistry::get('AssessmentPeers');
+        $values = [
+          'comments' => $data['comments'],
+          'peer_id' => $peer->id,
+          'assessment_peer_rubrics' => []
+        ];
+
+        $labels = json_decode($assessmentUser->assessment->labels);
+
+        $rubricTable = TableRegistry::get('AssessmentRubrics');
+        foreach ($data['rubric'] as $k => $v) {
+          $rubric = $rubricTable->find()->where([
+            'AssessmentRubrics.rubric_id' => $data['rubric'][$k],
+            'AssessmentRubrics.assessment_id' => $assessmentUser->assessment->id
+          ])->first();
+
+          $values['assessment_peer_rubrics'][] = [
+            'rubric_id' => $rubric->rubric_id,
+            'weight' => $rubric->weight,
+            'comments' => $data['rubric_comments'][$k],
+            'score' => ($data['score'][$k] > count($labels) - 1 ? 0 : ($data['score'][$k] * 1.0) / (count($labels) - 1))
+          ];
+        }
+
+        $assessmentPeer = $assessmentPeerTable->newEntity($values, ['validate' => false]);
+
+        if ($assessmentPeerTable->save($assessmentPeer)) {
+          $this->Flash->success(__('Sua avaliação foi enviada com sucesso.'));
+        } else {
+          $this->Flash->error(__('Ocorreu um erro ao tentar salvar sua avaliação.'));
+        }
+        return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+
+      }
+
+      $this->set('assessmentUser', $assessmentUser);
+
+      $dateFormat = 'dd/MM/yyyy HH:mm';
+      if (strtolower($this->Auth->user('locale')) == 'en'){
+        $dateFormat = 'MM/dd/yyyy hh:mm a';
+      }
+
+      $this->set('dateFormat', $dateFormat);
+      //debug($assessmentUser);
+
+
   }
 
   /**
@@ -563,12 +792,18 @@ class AssessmentsController extends AppController {
    * @param $user Array dados do usuário logado
    * @return boolean
    */
-  public function isAuthorized($user)
-  {
+  public function isAuthorized($user) {
+
     $action = $this->request->getParam('action');
-    if (in_array($action, ['index', 'add', 'addRubric', 'removeRubric', 'changeScales', 'getFile', 'listPeers', 'addPeerManual', 'removeAppraiser', 'removeAllPeers', 'peersRandom'])) {
+    if (in_array($action, [
+      'index', 'add', 'addRubric', 'removeRubric', 'changeScales', 'getFile',
+      'listPeers', 'addPeerManual', 'removeAppraiser', 'removeAllPeers',
+      'peersRandom', 'submit', 'removeFile', 'appraiser'
+    ])) {
       return true;
     }
+
+
 
     $assessment_id = $this->request->getParam('pass.0');
     if (!$assessment_id) {

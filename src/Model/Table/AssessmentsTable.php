@@ -136,10 +136,7 @@ class AssessmentsTable extends Table
     }
 
     public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
-      Log::write('debug', 'beforeSave');
-      Log::write('debug', $entity);
       if (isset($entity->file['name']) && !empty($entity->file['name'])) {
-        Log::write('debug', 'tentando fazer upload arquivo');
         $entity->file = $this->upload($entity->file);
       }
     }

@@ -25,9 +25,11 @@
               <label for="number"><?= __('Número de avaliações para cada participante') ?></label>
               <select class="form-control" id="number" required>
                 <option><?= __('Selecione') ?></option>
-                <?php foreach(range(1, $countStudents) as $n): ?>
-                  <option value="<?= $n ?>"><?= $n ?></option>
-                <?php endforeach; ?>
+                <?php if ($countStudents > 0): ?>
+                  <?php foreach(range(1, $countStudents) as $n): ?>
+                    <option value="<?= $n ?>"><?= $n ?></option>
+                  <?php endforeach; ?>
+                <?php endif; ?>
               </select>
             </div>
             <button type="submit" id="generate-random" class="btn btn-success">
@@ -106,10 +108,12 @@ $(document).ready(function(){
   listPeers();
 
   $('#auto').on('change', function() {
-    if ($(this).is(':checked')) {
-      $('#number').append('<option value="<?= ($countStudents + 1) ?>"><?= ($countStudents + 1) ?></option>');
-    } else {
-      $('#number option').last().remove();
+    if (<?= $countStudents ?>  > 0) {
+      if ($(this).is(':checked')) {
+        $('#number').append('<option value="<?= ($countStudents + 1) ?>"><?= ($countStudents + 1) ?></option>');
+      } else {
+        $('#number option').last().remove();
+      }
     }
   });
 

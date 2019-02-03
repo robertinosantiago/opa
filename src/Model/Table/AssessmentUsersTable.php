@@ -5,6 +5,9 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Event\Event;
+use Cake\Datasource\EntityInterface;
+use ArrayObject;
 
 /**
  * AssessmentUsers Model
@@ -42,6 +45,7 @@ class AssessmentUsersTable extends Table
         $this->setPrimaryKey('id');
 
         $this->addBehavior('Timestamp');
+        $this->addBehavior('Uploadable');
 
         $this->belongsTo('Users', [
             'foreignKey' => 'user_id',
@@ -98,5 +102,11 @@ class AssessmentUsersTable extends Table
         $rules->add($rules->existsIn(['assessment_id'], 'Assessments'));
 
         return $rules;
+    }
+
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options) {
+      if (isset($entity->file['name']) && !empty($entity->file['name'])) {
+        $entity->file = $this->upload($entity->file);
+      }
     }
 }

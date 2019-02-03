@@ -21,7 +21,7 @@
           'required' => true,
           'class' => 'form-control',
           'templates' => [
-            'inputContainer' => '<div class="form-group">{{content}}</div>',
+            'inputContainer' => '<div class="form-group required">{{content}}</div>',
           ],
         ]
       ); ?>

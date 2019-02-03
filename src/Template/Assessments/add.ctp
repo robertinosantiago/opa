@@ -19,7 +19,7 @@
 
             <div class="form-group required">
               <label for="title"><?= __('Título') ?></label>
-              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Crie um título para a avaliação. Exemplo: Seminário Normas ABNT - 3o. A') ?>"></i>
               <?= $this->Form->control(
                 'title',
                 [
@@ -33,14 +33,14 @@
 
             <div class="form-group required">
               <label for="editor"><?php echo __('Descrição'); ?></label>
-              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Descreva mais detalhes sobre a avaliação.') ?>"></i>
               <div id="editor"></div>
               <?php echo $this->Form->hidden('description', ['id' => 'description', 'required' => true]) ?>
             </div>
 
             <div class="form-group">
               <label for="attachment"><?= __('Anexo'); ?></label>
-              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+              <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Caso necessário, adicione um arquivo. Todos os tipos de arquivos são permitidos.') ?>"></i>
               <?= $this->Form->control(
                 'attachment',
                 [
@@ -57,7 +57,7 @@
 
                 <div class="form-group required">
                   <label for="maximum_score"><?= __('Nota máxima'); ?></label>
-                  <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                  <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Informe o peso da avaliação na nota total da disciplina. Exemplo: A avaliação pode ter um peso de 60% da nota total da sua disciplina. Informe então que ela vale 60 (de um total de 100).') ?>"></i>
                   <?= $this->Form->control(
                     'maximum_score',
                     [
@@ -76,7 +76,7 @@
               <div class="col-12 col-md-12 col-lg-9 mb-3">
                 <div class="form-group required">
                   <label for="team-name"><?php echo __('Turma'); ?></label>
-                  <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                  <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Informe a turma que realizará a avaliação. Utilize o botão para selecionar uma turma já cadastrada ou cadastre uma turma nova. Toda turma deve estar ligada a uma disciplina específica.') ?>"></i>
                   <div class="input-group">
                     <input type="text" required readonly id="team-name" class="form-control" placeholder="<?= __('Selecione uma turma'); ?>" aria-label="<?= __('Selecione uma turma'); ?>" aria-describedby="bt-open-team-modal">
                     <div class="input-group-append">
@@ -96,7 +96,7 @@
                 <div class="card mb-3">
                   <div class="card-header">
                     <?= __('Prazos')  ?>
-                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Determine os prazos da avaliação.') ?>"></i>
                   </div>
                   <div class="card-body">
                     <div class="row">
@@ -104,7 +104,7 @@
                         <div class="row">
                           <div class="col-12 required">
                             <label for="datestartat"><?php echo __('Início da submissão');  ?></label>
-                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Data de abertura do prazo para o Par Avaliado enviar as tarefas.') ?>"></i>
                           </div>
                         </div>
                         <div class="row">
@@ -121,7 +121,7 @@
                         <div class="row">
                           <div class="col-12 required">
                             <label for="dateendat"><?php echo __('Encerramento da submissão');  ?></label>
-                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Data de finalização do prazo para envio das tarefas pelo Par Avaliado.') ?>"></i>
                           </div>
                         </div>
                         <div class="row">
@@ -140,7 +140,7 @@
                         <div class="row">
                           <div class="col-12 required">
                             <label for="datestartassessmentpicker"><?php echo __('Início da avaliação');  ?></label>
-                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Data de abertura do prazo para que os Pares Avaliadores iniciem a avaliação das tarefas enviadas.') ?>"></i>
                           </div>
                         </div>
                         <div class="row">
@@ -157,7 +157,7 @@
                         <div class="row">
                           <div class="col-12 required">
                             <label for="dateendassessmentpicker"><?php echo __('Encerramento da avaliação');  ?></label>
-                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Data de finalização do prazo para que os Pares Avaliadores avaliem as tarefas enviadas.') ?>"></i>
                           </div>
                         </div>
                         <div class="row">
@@ -181,13 +181,14 @@
                 <div class="card mb-3">
                   <div class="card-header">
                     <?= __('Escalas')  ?>
-                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Defina as escalas de suas rubricas desta avaliação. TODAS as rubricas terão a mesma quantidade de escalas e identificação que você determinar.') ?>"></i>
                   </div>
                   <div class="card-body">
                     <div class="row">
                       <div class="col">
                         <div class="form-group required">
                           <label for="scale"><?php echo __('Quantidade de escalas (Entre 2 e 10)'); ?></label>
+                          <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('A identificação de cada escala pode ser numérica ou você pode definir com o texto que desejar para cada item da escala. A escala deve ser definida sempre em ordem crescente.') ?>"></i>
                           <div class="input-group">
                             <input type="number" name="scale" value="3" min="2" max="10" required id="scale" class="form-control" placeholder="<?= __('Informe um número entre 2 e 10'); ?>" >
                             <div class="input-group-append">
@@ -217,7 +218,7 @@
                 <div id="card-rubrics" class="card mb-3">
                   <div class="card-header">
                     <?= __('Rubricas')  ?>
-                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.') ?>"></i>
+                    <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Defina as rubricas que farão parte da sua avaliação.') ?>"></i>
                   </div>
                   <div class="card-body">
                     <div class="row mb-3">
@@ -225,6 +226,7 @@
                         <div class="row">
                           <div class="col-12 col-md-8">
                             <strong><?= __('Rubrica'); ?></strong>
+                            <i tabindex="0" class="fas fa-question-circle help" data-container="body" data-toggle="popover" data-placement="right" data-content="<?= __('Digite o texto da rubrica e pressione “Enter” para inseri-la. Depois, defina o peso que a rubrica terá em relação às outras rubricas desta mesma avaliação. Você também pode visualizar todas as rubricas já cadastradas utilizando o botão “Listar Todas”, para escolher uma rubrica para a avaliação.') ?>"></i>
                           </div>
                           <div class="col-12 col-md-2">
                             <strong><?= __('Peso'); ?></strong>
@@ -257,9 +259,6 @@
                 </div>
               </div>
             </div>
-
-
-
 
             <button type="submit" class="btn btn-success">
               <?php echo __('Salvar'); ?>
