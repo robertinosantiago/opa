@@ -59,6 +59,9 @@ class AssessmentsTable extends Table
         $this->hasMany('AssessmentRubrics', [
             'foreignKey' => 'assessment_id'
         ]);
+        $this->hasMany('AssessmentUsers', [
+            'foreignKey' => 'assessment_id'
+        ]);
     }
 
     /**

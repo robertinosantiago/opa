@@ -81,10 +81,10 @@ class AssessmentUsersTable extends Table
             ->scalar('document_text')
             ->allowEmpty('document_text');
 
-        $validator
-            ->boolean('draft')
-            ->requirePresence('draft', 'create')
-            ->notEmpty('draft');
+        // $validator
+        //     ->boolean('draft')
+        //     ->requirePresence('draft', 'create')
+        //     ->notEmpty('draft');
 
         return $validator;
     }

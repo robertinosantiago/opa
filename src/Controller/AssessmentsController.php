@@ -130,12 +130,7 @@ class AssessmentsController extends AppController {
       ->where(['user_id' => $this->Auth->user('id')])
       ->order(['title' => 'ASC']);
 
-    $dateFormat = 'dd/MM/yyyy HH:mm';
-    if (strtolower($this->Auth->user('locale')) == 'en'){
-      $dateFormat = 'MM/dd/yyyy hh:mm a';
-    }
-
-    $this->set(compact('assessment', 'rubrics', 'dateFormat'));
+    $this->set(compact('assessment', 'rubrics'));
 
   }
 
@@ -308,7 +303,7 @@ class AssessmentsController extends AppController {
   */
   public function peers($id) {
     $assessment = $this->Assessments
-        ->get($id, ['contain' => ['Teams' => ['Disciplines', 'TeamUsers' => 'Users']]]);
+        ->get($id, ['contain' => ['AssessmentRubrics' => ['Rubrics'], 'Teams' => ['Disciplines', 'TeamUsers' => 'Users']]]);
 
     $users = $assessment->team->team_users;
     $countStudents = count($users) > 0 ? count($users) - 1 : 0;
@@ -589,12 +584,6 @@ class AssessmentsController extends AppController {
       $assessmentUser = $existAssessmentUser;
     }
 
-    $dateFormat = 'dd/MM/yyyy HH:mm';
-    if (strtolower($this->Auth->user('locale')) == 'en'){
-      $dateFormat = 'MM/dd/yyyy hh:mm a';
-    }
-
-
     if ($this->request->is('post')) {
       $data = $this->request->getData();
 
@@ -629,7 +618,6 @@ class AssessmentsController extends AppController {
     }
 
     $this->set('assessment', $assessment);
-    $this->set('dateFormat', $dateFormat);
     $this->set('assessmentUser', $assessmentUser);
 
   }
@@ -747,6 +735,7 @@ class AssessmentsController extends AppController {
             'rubric_id' => $rubric->rubric_id,
             'weight' => $rubric->weight,
             'comments' => $data['rubric_comments'][$k],
+            'label' => ($data['score'][$k] > count($labels) - 1 ? $labels[0] : $labels[$data['score'][$k]]),
             'score' => ($data['score'][$k] > count($labels) - 1 ? 0 : ($data['score'][$k] * 1.0) / (count($labels) - 1))
           ];
         }
@@ -764,15 +753,165 @@ class AssessmentsController extends AppController {
 
       $this->set('assessmentUser', $assessmentUser);
 
-      $dateFormat = 'dd/MM/yyyy HH:mm';
-      if (strtolower($this->Auth->user('locale')) == 'en'){
-        $dateFormat = 'MM/dd/yyyy hh:mm a';
-      }
 
-      $this->set('dateFormat', $dateFormat);
       //debug($assessmentUser);
 
 
+  }
+
+  /**
+   * Método utilizado para encerrar uma avaliação que está aberta e divulgar
+   * as notas obtidas por cada par avaliado
+   *
+   * @param int $id Código da avaliação
+   */
+  public function finish($id) {
+    $assessmentUserTable = TableRegistry::get('AssessmentUsers');
+
+    $assessment = $this->Assessments->get($id, [
+      'contain' => [
+        'AssessmentRubrics' => ['Rubrics'],
+        'Teams' => ['Disciplines', 'TeamUsers' => 'Users'],
+      ]
+    ]);
+
+    if ($this->request->is(['post'])) {
+      $data = $this->request->getData();
+
+      // debug($data);
+      if ($data['Assessment']['id'] != $assessment->id) {
+        $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
+        return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+      }
+
+      $insert = [];
+      $update = [];
+
+      foreach ($data['score'] as $key => $score) {
+        if ($data['AssessmentUsers']['id'][$key] == '') {
+          $insert[] = [
+            'user_id' => $data['Users']['id'][$key],
+            'assessment_id' => $assessment->id,
+            'score' => $score,
+            'from_teacher' => 1
+          ];
+        } else {
+            $registry = $assessmentUserTable->get($data['AssessmentUsers']['id'][$key]);
+            $registry->score = ($score < 0 || $score > $assessment->maximum_score) ? 0 : $score;
+            $update[] = $registry;
+        }
+      }
+
+      if (!empty($insert)) {
+        $insertEntities = $assessmentUserTable->newEntities($insert);
+        $assessmentUserTable->saveMany($insertEntities);
+      }
+
+      if (!empty($update)) {
+        $assessmentUserTable->saveMany($update, ['validate' => false]);
+      }
+
+      $assessment->status = 'finish';
+
+      if ($this->Assessments->save($assessment)) {
+        $this->Flash->success(__('Sua avaliação foi encerrada com sucesso.'));
+        return $this->redirect(['controller' => 'Assessments', 'action' => 'controls', $assessment->id]);
+      }
+
+    }
+
+
+    foreach ($assessment->team->team_users as $key => $teamUser) {
+      $assessmentUser = $assessmentUserTable
+        ->find()
+        ->contain([
+          'Peers' => ['Users', 'AssessmentPeers' => 'AssessmentPeerRubrics']
+        ])
+        ->where([
+          'AssessmentUsers.user_id' => $teamUser->user_id,
+          'AssessmentUsers.assessment_id' => $assessment->id
+        ])
+        ->first();
+      $teamUser['assessment_user'] = $assessmentUser;
+      $scoreAssessmentUser = 0.0;
+      $appraisers = 0;
+
+      if ($teamUser->assessment_user) {
+        foreach($teamUser->assessment_user->peers as $peer) {
+          $appraisers += 1;
+          foreach ($peer->assessment_peers as $ap) {
+            $sum_weight = 0;
+            $score_ap = 0.0;
+            foreach ($ap->assessment_peer_rubrics as $apr) {
+              // TODO: Corrigir para pegar os pesos da tabela assessment_rubrics
+              $sum_weight += $apr->weight;
+              $score_ap += ($apr->score * $apr->weight) * $assessment->maximum_score;
+            }
+            $ap->score = $score_ap / $sum_weight;
+            $scoreAssessmentUser += $ap->score;
+          }
+        }
+        $teamUser->assessment_user->score = ($appraisers == 0 ? 0 : $scoreAssessmentUser / $appraisers);
+
+      }
+
+    }
+
+    $this->set(compact('assessment'));
+  }
+
+  /**
+  * Método utilizado para visualizar, via Ajax, a submissão do par avaliado.
+  *
+  * Este método está sendo usado em:
+  * - /assessments/finish/$id
+  */
+  public function viewSubmit() {
+    $this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post']);
+
+    $data = $this->request->getData();
+
+    $assessmentUser = TableRegistry::get('AssessmentUsers')->get($data['id']);
+
+    $this->set(compact('assessmentUser'));
+  }
+
+  /**
+  * Método utilizado para visualizar, via Ajax, a avaliação do par avaliador.
+  *
+  * Este método está sendo usado em:
+  * - /assessments/finish/$id
+  */
+  public function viewAppraiser() {
+    $this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post']);
+
+    $data = $this->request->getData();
+
+    $assessmentPeer = TableRegistry::get('AssessmentPeers')
+      ->get($data['id'], [
+        'contain' => ['AssessmentPeerRubrics' => 'Rubrics', 'Peers' => 'Assessments']
+      ]);
+
+    $this->set(compact('assessmentPeer'));
+  }
+
+  /**
+   * Método utilizado para visualizar as notas obtidas na avaliação
+   *
+   * @param int $id Código da avaliação
+   */
+  public function scores($id) {
+    $assessment = $this->Assessments->get($id, [
+      'contain' => [
+        'AssessmentRubrics' => ['Rubrics'],
+        'AssessmentUsers' => ['Users' => ['sort' => ['Users.first_name' => 'ASC', 'Users.last_name' => 'ASC']]],
+        'Teams' => ['Disciplines']
+      ]
+    ]);
+
+    $this->set(compact('assessment'));
   }
 
   /**
@@ -782,7 +921,18 @@ class AssessmentsController extends AppController {
   public function beforeFilter(Event $event)
   {
     parent::beforeFilter($event);
-    $this->viewBuilder()->setLayout('logged');
+    $action = $this->request->getParam('action');
+    if (in_array($action, ['controls', 'peers', 'finish', 'scores'])) {
+        $this->viewBuilder()->setLayout('controlAssessments');
+    } else {
+      $this->viewBuilder()->setLayout('logged');
+    }
+
+    $dateFormat = 'dd/MM/yyyy HH:mm';
+    if (strtolower($this->Auth->user('locale')) == 'en'){
+      $dateFormat = 'MM/dd/yyyy hh:mm a';
+    }
+    $this->set('dateFormat', $dateFormat);
   }
 
   /**
@@ -798,12 +948,11 @@ class AssessmentsController extends AppController {
     if (in_array($action, [
       'index', 'add', 'addRubric', 'removeRubric', 'changeScales', 'getFile',
       'listPeers', 'addPeerManual', 'removeAppraiser', 'removeAllPeers',
-      'peersRandom', 'submit', 'removeFile', 'appraiser'
+      'peersRandom', 'submit', 'removeFile', 'appraiser', 'viewSubmit',
+      'viewAppraiser'
     ])) {
       return true;
     }
-
-
 
     $assessment_id = $this->request->getParam('pass.0');
     if (!$assessment_id) {

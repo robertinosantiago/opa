@@ -41,6 +41,8 @@ class AssessmentUser extends Entity
         'modified' => true,
         'user' => true,
         'assessment' => true,
-        'peers' => true
+        'peers' => true,
+        'score' => true,
+        'from_teacher' => true
     ];
 }

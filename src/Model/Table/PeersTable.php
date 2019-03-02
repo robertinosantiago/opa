@@ -55,6 +55,9 @@ class PeersTable extends Table
         $this->belongsTo('AssessmentUsers', [
             'foreignKey' => 'assessment_user_id'
         ]);
+        $this->hasMany('AssessmentPeers', [
+            'foreignKey' => 'peer_id'
+        ]);
     }
 
     /**

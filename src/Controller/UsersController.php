@@ -34,18 +34,6 @@ class UsersController extends AppController
             $this->Flash->error(__('Credenciais inválidas.'));
         }
         $this->set(compact('user'));
-
-
-        // if ($this->request->is('post')) {
-        //     $user = $this->Auth->identify();
-        //     debug($user);
-        //     if ($user) {
-        //         $this->Auth->setUser($user);
-
-        //         return $this->redirect($this->Auth->redirectUrl());
-        //     }
-        //     $this->Flash->error('Your username or password is incorrect.');
-        // }
     }
 
     public function register()
@@ -69,11 +57,41 @@ class UsersController extends AppController
         return $this->redirect($this->Auth->logout());
     }
 
+    /**
+    * Método utilizado para exibir, via Ajax, a listagem de usuários
+    * a serem inseridos em uma determinada turma.
+    *
+    * Utilizado em:
+    * - /disciplines/controls/$id
+    */
+    public function usersTable() {
+
+      $this->request->allowMethod(['get', 'ajax']);
+
+      $query = $this->request->query();
+      $team = (array_key_exists('team', $query)) ? $query['team'] : '';
+      $search = (array_key_exists('search', $query)) ? $query['search'] : '';
+      $start = (array_key_exists('start', $query)) ? $query['start'] : 1;
+      $length = (array_key_exists('length', $query)) ? $query['length'] : 10;
+
+      $users = $this->Users->find('table', [
+        'team' => $team,
+        'search' => $search,
+        'start' => $start,
+        'length' => $length
+      ]);
+
+      $pages = ceil($users->count() / $length);
+
+      $this->set(compact('pages', 'users', 'start', 'search'));
+
+    }
+
     public function isAuthorized($user)
     {
         $action = $this->request->getParam('action');
         // The add and tags actions are always allowed to logged in users.
-        if (in_array($action, ['index', 'tags'])) {
+        if (in_array($action, ['index', 'tags', 'usersTable'])) {
             return true;
         }
 

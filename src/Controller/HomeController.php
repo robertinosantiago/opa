@@ -162,6 +162,10 @@ class HomeController extends AppController
         $this->set('dateFormat', $dateFormat);
     }
 
+    public function tempo() {
+      debug(Time::now());
+    }
+
     /**
      * Função utilizada para autorizar usuários logados a acessarem
      * determinadas funções da classe controladora.
@@ -172,7 +176,7 @@ class HomeController extends AppController
     public function isAuthorized($user)
     {
         $action = $this->request->getParam('action');
-        if (in_array($action, ['index'])) {
+        if (in_array($action, ['index', 'tempo'])) {
             return true;
         }
         return false;

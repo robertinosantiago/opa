@@ -35,6 +35,7 @@ class AssessmentPeerRubric extends Entity
         'rubric_id' => true,
         'assessment_peer_id' => true,
         'rubric' => true,
-        'assessment_peer' => true
+        'assessment_peer' => true,
+        'label' => true
     ];
 }

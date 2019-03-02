@@ -1,7 +1,7 @@
 <?php
 use Migrations\AbstractMigration;
 
-class AlterAssessmentPeerRubrics extends AbstractMigration
+class AlterLabelAssessmentPeerRubrics extends AbstractMigration
 {
     /**
      * Change Method.
@@ -12,8 +12,9 @@ class AlterAssessmentPeerRubrics extends AbstractMigration
      */
     public function change()
     {
-      $table = $this->table('assessment_peer_rubrics');
-      $table->changeColumn('score', 'float', ['null' => false]);
-      $table->update();
+        $table = $this->table('assessment_peer_rubrics');
+        $table
+          ->addColumn('label', 'string', ['limit' => 255, 'null' => false])
+          ->update();
     }
 }

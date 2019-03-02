@@ -1,6 +1,20 @@
-<h1>Lorem ipsum</h1>
-<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+<div style="text-align: center; padding: 5px 2px">
+  <img width="120" height="120" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+PHN2ZyAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiICAgdmVyc2lvbj0iMSIgICB2aWV3Qm94PSIwIDAgNDggNDgiICAgZW5hYmxlLWJhY2tncm91bmQ9Im5ldyAwIDAgNDggNDgiICAgaWQ9InN2ZzQ1ODgiICAgc29kaXBvZGk6ZG9jbmFtZT0iaW52aXRlLnN2ZyIgICBpbmtzY2FwZTp2ZXJzaW9uPSIwLjkyLjMgKDI0MDU1NDYsIDIwMTgtMDMtMTEpIj4gIDxtZXRhZGF0YSAgICAgaWQ9Im1ldGFkYXRhNDU5NCI+ICAgIDxyZGY6UkRGPiAgICAgIDxjYzpXb3JrICAgICAgICAgcmRmOmFib3V0PSIiPiAgICAgICAgPGRjOmZvcm1hdD5pbWFnZS9zdmcreG1sPC9kYzpmb3JtYXQ+ICAgICAgICA8ZGM6dHlwZSAgICAgICAgICAgcmRmOnJlc291cmNlPSJodHRwOi8vcHVybC5vcmcvZGMvZGNtaXR5cGUvU3RpbGxJbWFnZSIgLz4gICAgICAgIDxkYzp0aXRsZT48L2RjOnRpdGxlPiAgICAgIDwvY2M6V29yaz4gICAgPC9yZGY6UkRGPiAgPC9tZXRhZGF0YT4gIDxkZWZzICAgICBpZD0iZGVmczQ1OTIiIC8+ICA8c29kaXBvZGk6bmFtZWR2aWV3ICAgICBwYWdlY29sb3I9IiNmZmZmZmYiICAgICBib3JkZXJjb2xvcj0iIzY2NjY2NiIgICAgIGJvcmRlcm9wYWNpdHk9IjEiICAgICBvYmplY3R0b2xlcmFuY2U9IjEwIiAgICAgZ3JpZHRvbGVyYW5jZT0iMTAiICAgICBndWlkZXRvbGVyYW5jZT0iMTAiICAgICBpbmtzY2FwZTpwYWdlb3BhY2l0eT0iMCIgICAgIGlua3NjYXBlOnBhZ2VzaGFkb3c9IjIiICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjEzNjYiICAgICBpbmtzY2FwZTp3aW5kb3ctaGVpZ2h0PSI3MDAiICAgICBpZD0ibmFtZWR2aWV3NDU5MCIgICAgIHNob3dncmlkPSJmYWxzZSIgICAgIGlua3NjYXBlOnpvb209IjcuNTU3MjAzNyIgICAgIGlua3NjYXBlOmN4PSIyNi42NTQ5ODMiICAgICBpbmtzY2FwZTpjeT0iMzQuMjQ2MzI1IiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMCIgICAgIGlua3NjYXBlOndpbmRvdy1tYXhpbWl6ZWQ9IjEiICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJzdmc0NTg4IiAvPiAgPGcgICAgIGlkPSJnNDYwNSIgICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAsMy41KSI+ICAgIDxwYXRoICAgICAgIHN0eWxlPSJmaWxsOiM0ZjVmNmY7ZmlsbC1vcGFjaXR5OjEiICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiICAgICAgIGlkPSJwYXRoNDU3NiIgICAgICAgZD0iTSA0MCw0MSBIIDggQyA1LjgsNDEgNCwzOS4yIDQsMzcgViAxNi4xIEMgNCwxNC44IDQuNiwxMy42IDUuNywxMi44IEwgMjQsMCA0Mi4zLDEyLjggYyAxLjEsMC43IDEuNywyIDEuNywzLjMgViAzNyBjIDAsMi4yIC0xLjgsNCAtNCw0IHoiIC8+ICAgIDxyZWN0ICAgICAgIGlkPSJyZWN0NDU3OCIgICAgICAgaGVpZ2h0PSIyMiIgICAgICAgd2lkdGg9IjI0IiAgICAgICB5PSIxMSIgICAgICAgeD0iMTIiICAgICAgIHN0eWxlPSJmaWxsOiNmZmZmZmYiIC8+ICAgIDxwYXRoICAgICAgIGlkPSJwYXRoNDU4MCIgICAgICAgZD0iTSA0MCw0MSBIIDggQyA1LjgsNDEgNCwzOS4yIDQsMzcgViAxNyBMIDI0LDMwIDQ0LDE3IHYgMjAgYyAwLDIuMiAtMS44LDQgLTQsNCB6IiAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAgICAgICBzdHlsZT0iZmlsbDojY2ZkOGRjIiAvPiAgICA8dGV4dCAgICAgICBpZD0idGV4dDQ1OTgiICAgICAgIHk9IjIwLjg1MzcxNiIgICAgICAgeD0iMTIuNTAwMTExIiAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC13ZWlnaHQ6bm9ybWFsO2ZvbnQtc2l6ZTozMy41MjU2NTM4NHB4O2xpbmUtaGVpZ2h0OjEuMjU7Zm9udC1mYW1pbHk6c2Fucy1zZXJpZjtsZXR0ZXItc3BhY2luZzowcHg7d29yZC1zcGFjaW5nOjBweDtmaWxsOiM0ZjVmNmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlOm5vbmU7c3Ryb2tlLXdpZHRoOjAuODM4MTQxMzgiICAgICAgIHhtbDpzcGFjZT0icHJlc2VydmUiPjx0c3BhbiAgICAgICAgIHN0eWxlPSJmb250LXNpemU6MTEuMTc1MjE4NThweDtmaWxsOiM0ZjVmNmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuODM4MTQxMzgiICAgICAgICAgeT0iMjAuODUzNzE2IiAgICAgICAgIHg9IjEyLjUwMDExMSIgICAgICAgICBpZD0idHNwYW40NTk2IiAgICAgICAgIHNvZGlwb2RpOnJvbGU9ImxpbmUiPk9QQTwvdHNwYW4+PC90ZXh0PiAgPC9nPjwvc3ZnPg==" alt="Icone convite">
+</div>
+<h1><?= __('Convite') ?></h1>
+<p><?= __('Você foi convidado para participar da Turma {0} pertencente à disciplina {1}.', [$team->name, $team->discipline->name]) ?></p>
+<p><?= __('Para aceitar, você deve clicar no botão abaixo') ?></p>
 <?php $url = $this->Url->build(['controller' => 'Teams', 'action' => 'confirmInvite', $hash], true);?>
-<a class="" href="<?= $url; ?>">
-  <?= $url; ?>
-</a>
+<div style="text-align: center; padding: 5px 2px">
+  <a style="background-color: #4f5f6f; color: #fff; padding: 14px 25px; text-align: center; text-decoration: none; display: inline-block;" href="<?= $url; ?>" target="_blank" title="<?= __('Aceitar') ?>">
+    <?= __('Aceitar') ?>
+  </a>
+</div>
+<p><?= __('Ou, você pode copiar o link abaixo e colar na barra de endereço do seu navegador favorito.') ?></p>
+<div style="text-align: center; padding: 5px 2px">
+  <p style="text-color: #bbb"><strong><small><?= $url ?></small></strong></p>
+</div>
+<hr>
+<p>
+  <strong><?= __('Equipe OPA') ?></strong>
+</p>

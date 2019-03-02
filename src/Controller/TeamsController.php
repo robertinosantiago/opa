@@ -99,6 +99,21 @@ class TeamsController extends AppController {
 
   }
 
+  public function listUsers() {
+    $this->request->allowMethod(['get', 'ajax']);
+    $this->viewBuilder()->layout('ajax');
+    $data = $this->request->query();
+
+    $teamUsersTable = TableRegistry::get('TeamUsers');
+
+    $users = $teamUsersTable->find()
+      ->select(['Users.id', 'Users.first_name', 'Users.last_name'])
+      ->contain(['Users'])
+      ->where(['TeamUsers.team_id' => $data['team_id']]);
+
+    $this->set(compact('users'));
+  }
+
   public function ajaxScales() {
     $this->viewBuilder()->layout('ajax');
     $this->request->allowMethod(['post', 'ajax']);
@@ -113,6 +128,46 @@ class TeamsController extends AppController {
     } else {
       throw new \Exception("Error Processing Request", 1);
     }
+  }
+
+  public function addUser() {
+    $this->request->allowMethod(['post', 'ajax']);
+
+    $data = $this->request->getData();
+
+    if (empty($data['user_id']) && empty($data['team_id'])) {
+      throw new \Exception("Error Processing Request", 1);
+    }
+
+    $team = $this->Teams->find()
+      ->contain(['Disciplines'])
+      ->where([
+        'Teams.id' => $data['team_id'],
+        'Disciplines.user_id' => $this->Auth->user('id')
+      ]);
+
+    if ($team->isEmpty()) {
+      throw new \Exception(__('Você não está autorizado a acessar essa avaliação.'), 1);
+    }
+
+    $teamUsersTable = TableRegistry::get('TeamUsers');
+
+    $teamUser = $teamUsersTable->find()
+      ->where([
+        'TeamUsers.user_id' => $data['user_id'],
+        'TeamUsers.team_id' => $data['team_id']
+      ]);
+
+    if ($teamUser->isEmpty()) {
+      $teamUser = $teamUsersTable->newEntity([
+        'user_id' => $data['user_id'],
+        'team_id' => $data['team_id']
+      ]);
+      $teamUsersTable->save($teamUser);
+    }
+
+    $this->set(['message' => 'ok', '_serialize' => 'message']);
+
   }
 
   /**
@@ -143,6 +198,7 @@ class TeamsController extends AppController {
 
       if (!empty($mailValid)) {
         $inviteTable = TableRegistry::get('Invites');
+        $team = $this->Teams->get($team_id, ['contain' => ['Disciplines']]);
         $email = new Email();
         foreach ($mailValid as $mail) {
           $invite = $inviteTable->newEntity();
@@ -155,7 +211,7 @@ class TeamsController extends AppController {
               ->subject(__('Convite para ingressar no OPA'))
               ->emailFormat('html')
               ->template('invite')
-              ->viewVars(['email' => $invite->email, 'hash' => $invite->hash])
+              ->viewVars(['email' => $invite->email, 'hash' => $invite->hash, 'team' => $team])
               ->helpers(['Html', 'Url'])
               ->send();
           }
@@ -254,7 +310,7 @@ class TeamsController extends AppController {
   public function isAuthorized($user)
   {
     $action = $this->request->getParam('action');
-    if (in_array($action, ['selectTeam', 'teamsTable', 'ajaxSave', 'ajaxScales', 'confirmInvite'])) {
+    if (in_array($action, ['selectTeam', 'teamsTable', 'ajaxSave', 'ajaxScales', 'confirmInvite', 'addUser', 'listUsers'])) {
       return true;
     }
 

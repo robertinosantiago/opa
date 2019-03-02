@@ -3,6 +3,7 @@
 namespace App\Model\Table;
 
 use Cake\ORM\Table;
+use Cake\ORM\Query;
 
 class UsersTable extends Table
 {
@@ -48,5 +49,39 @@ class UsersTable extends Table
         }
 
         return $user;
+    }
+
+    /**
+    * Método utilizado para recuperar a listagem de usuários cadastrados
+    */
+    public function findTable(Query $query, array $options) {
+      $team = (array_key_exists('team', $options)) ? $options['team'] : '';
+      $search = (array_key_exists('search', $options)) ? $options['search'] : '';
+      $start = (array_key_exists('start', $options)) ? $options['start'] : 1;
+      $length = (array_key_exists('length', $options)) ? $options['length'] : 20;
+
+      $query
+        ->select(['Users.id', 'Users.first_name', 'Users.last_name', 'Users.email', 'Users.avatar']);
+
+      if ($team) {
+        // $query->contain('TeamUsers');
+        $query->notMatching('TeamUsers', function($q) use ($team){
+          return $q->where(['team_id' => $team]);
+        });
+      }
+
+      if ($search)
+        $query->where(['OR' => [
+          'Users.first_name LIKE' => '%' . $search .'%',
+          'Users.last_name LIKE' => '%' . $search .'%',
+          'Users.email LIKE' => '%' . $search .'%',
+          ]]);
+
+      $query->order(['Users.first_name' => 'ASC', 'Users.last_name' => 'ASC']);
+
+      $query->limit($length);
+      $query->page($start);
+
+      return $query;
     }
 }
