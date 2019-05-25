@@ -9838,7 +9838,7 @@ td.actions {
   font-size: 0.9em;
   border-left: 3px solid transparent;
   transition: border-left-color 0.3s ease, background-color 0.3s ease;
-  color: #ffa154;
+  color: #fff;
 }
 .menu-link.active, .menu-link:hover, .menu-link:focus {
   background: #ff8521;
@@ -10040,7 +10040,7 @@ body.not-logged {
   display: inline-block;
   line-height: 70px;
   text-decoration: none;
-  color: #ffa154;
+  color: #fff;
 }
 .nav-assessment .nav-link.active {
   background: #0e3747;
