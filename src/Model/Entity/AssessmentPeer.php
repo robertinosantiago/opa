@@ -33,6 +33,7 @@ class AssessmentPeer extends Entity
         'created' => true,
         'modified' => true,
         'peer' => true,
+        'score' => true,
         'assessment_peer_rubrics' => true
     ];
 }

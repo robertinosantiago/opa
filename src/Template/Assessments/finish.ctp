@@ -110,7 +110,7 @@
                         <?php $score = $teamUser->assessment_user->score ?>
                       <?php endif; ?>
                       <?php $score = preg_replace('/(\.\d\d).*/', '$1', $score); ?>
-                      <input required class="form-control" type="number" name="score[]" min="0" max="<?= $assessment->maximum_score ?>" step="0.1" value="<?= ($score != null ? sprintf('%01.2f', $score) : '') ?>">
+                      <input required class="form-control" type="number" name="score[]" min="0" max="<?= $assessment->maximum_score ?>" step="0.01" value="<?= ($score != null ? sprintf('%01.2f', $score) : '') ?>">
                       <?= $this->Form->hidden('AssessmentUsers.id[]', ['value' => ($teamUser->assessment_user == null ? '' : $teamUser->assessment_user->id)]); ?>
                       <?= $this->Form->hidden('Users.id[]', ['value' => $teamUser->user->id]); ?>
                       <?php if ($msg != null): ?>
@@ -123,15 +123,17 @@
                       <table class="table table-striped table-hover table-sm">
                         <?php foreach ($teamUser->assessment_user->peers as $peer): ?>
                           <?php foreach ($peer->assessment_peers as $ap): ?>
+
                             <tr>
                               <td>
                                 <a href="#" class="viewAppraiser" data-appraiser="<?= $ap->id ?>">
                                   <?= $peer->user->first_name ?> <?= $peer->user->last_name ?>
                                 </a>
                               </td>
-                              <td>
+                              <td style="width: 65px" class="text-right">
                                 <a href="#" class="viewAppraiser" data-appraiser="<?= $ap->id ?>">
-                                  <?= $ap->score ?>
+                                  <?php $scoreAp = preg_replace('/(\.\d\d).*/', '$1', $ap->score); ?>
+                                  <?= ($scoreAp != null ? sprintf('%01.2f', $scoreAp) : '') ?>
                                 </a>
                               </td>
                             </tr>

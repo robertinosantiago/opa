@@ -3,7 +3,7 @@
     <tbody>
       <?php foreach($users as $user): ?>
       <tr>
-        <td><?= $user->Users->first_name . ' ' . $user->Users->last_name  ?></td>
+        <td><?= $user->user->first_name . ' ' . $user->user->last_name  ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

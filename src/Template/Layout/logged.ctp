@@ -16,7 +16,7 @@
     <?php echo __('OPA'); ?>:<?php echo $this->fetch('title') ?>
   </title>
 
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous">
+  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B" crossorigin="anonymous"> -->
 
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
   <?php echo $this->Html->css('main.css'); ?>
@@ -61,7 +61,15 @@
           </span>
         </a>
       </li>
-      <li class="sidebar-menu-dropdown">
+      <li>
+        <a class="menu-link" href="<?php echo $this->Url->build('/Scores'); ?>" title="<?php echo __('Minhas notas'); ?>">
+          <i class="fas fa-trophy"></i>
+          <span class="menu-label">
+            <?php echo __('Minhas notas'); ?>
+          </span>
+        </a>
+      </li>
+      <!-- <li class="sidebar-menu-dropdown">
         <a class="menu-link" href="#" title="Link" data-toggle="submenu">
           <i class="fas fa-link"></i>
           <span class="menu-label">Dropdown</span>
@@ -88,39 +96,7 @@
             </a>
           </li>
         </ul>
-      </li>
-      <li class="sidebar-menu-dropdown">
-        <a class="menu-link" href="#" title="Link" data-toggle="submenu">
-          <i class="fas fa-link"></i>
-          <span class="menu-label">Dropdown</span>
-        </a>
-        <ul class="submenu list-unstyled">
-          <li>
-            <a class="submenu-link" href="#" title="Sublink">
-              <i class="fas fa-link"></i>
-              Submenu Link
-            </a>
-          </li>
-          <li>
-            <a class="submenu-link" href="#" title="Sublink">
-              <i class="fas fa-link"></i>
-              Submenu Link
-            </a>
-          </li>
-          <li>
-            <a class="submenu-link" href="#" title="Sublink">
-              <i class="fas fa-link"></i>
-              Submenu Link
-            </a>
-          </li>
-          <li>
-            <a class="submenu-link" href="#" title="Sublink">
-              <i class="fas fa-link"></i>
-              Submenu Link
-            </a>
-          </li>
-        </ul>
-      </li>
+      </li> -->
 
     </ul>
   </aside>
@@ -143,17 +119,9 @@
   crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em" crossorigin="anonymous"></script>
-  <?php echo $this->Html->script('sidebar.js'); ?>
-  <script type="text/javascript">
-  $(document).ready(function(){
-    window.setTimeout(function() {
-      $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function(){
-        $(this).remove();
-      });
-    }, 4000);
-  })
-  </script>
-  <?php echo $this->fetch('script'); ?>
+<?=$this->Html->script('sidebar.js'); ?>
+<?=$this->Html->script('script.js'); ?>
+<?=$this->fetch('script'); ?>
 </body>
 
 </html>

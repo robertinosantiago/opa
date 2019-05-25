@@ -3,6 +3,8 @@
 namespace App\Controller;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\Time;
+use Cake\Chronos\Chronos;
+
 
 /**
  * Classe utilizada para controlar a página inicial do site, quando o usuário
@@ -108,13 +110,26 @@ class HomeController extends AppController
         if ($assessments->isEmpty()) $assessments = false;
         $this->set('assessments', $assessments);
 
-        $appraisers = TableRegistry::get('Assessments')
+        $appraisers = TableRegistry::get('Peers')
           ->find()
-          ->select(['Assessments.id', 'Assessments.title',
+          ->select(['Peers.id', 'Assessments.id', 'Assessments.title',
             'Assessments.start_assessment', 'Assessments.end_assessment',
             'Teams.name', 'Disciplines.name', 'AssessmentUsers.id'
           ])
           ->join([
+            'AssessmentUsers' => [
+              'table' => 'assessment_users',
+              'type' => 'inner',
+              'conditions' => [
+                'AssessmentUsers.user_id = Peers.user_id',
+                'AssessmentUsers.assessment_id = Peers.assessment_id'
+              ]
+            ],
+            'Assessments' => [
+              'table' => 'assessments',
+              'type' => 'inner',
+              'conditions' => ['Assessments.id = AssessmentUsers.assessment_id']
+            ],
             'Teams' => [
               'table' => 'teams',
               'type' => 'inner',
@@ -125,19 +140,6 @@ class HomeController extends AppController
               'type' => 'inner',
               'conditions' => 'Disciplines.id = Teams.discipline_id'
             ],
-            'Peers' => [
-              'table' => 'peers',
-              'type' => 'inner',
-              'conditions' => [
-                'Assessments.id = Peers.assessment_id',
-                'Peers.appraiser_id' => $this->Auth->user('id')
-              ]
-            ],
-            'AssessmentUsers' => [
-              'table' => 'assessment_users',
-              'type' => 'inner',
-              'conditions' => ['Peers.user_id = AssessmentUsers.user_id']
-            ],
             'AssessmentPeers' => [
               'table' => 'assessment_peers',
               'type' => 'left',
@@ -145,12 +147,19 @@ class HomeController extends AppController
             ]
           ])
           ->where([
-            'AssessmentUsers.draft' => false, //O professor deve habilitar se pode avaliar se estiver no rascunho ainda
-            'Assessments.start_assessment <=' => Time::now(),
-            'Assessments.end_assessment >=' => Time::now(),
-            'AssessmentPeers.id IS' => null
+            // 'AssessmentUsers.draft' => false, //O professor deve habilitar se pode avaliar se estiver no rascunho ainda
+            'AssessmentPeers.id IS' => null,
+            'Peers.appraiser_id' => $this->Auth->user('id'),
+            'Assessments.start_assessment <=' => Chronos::now(),
+            'Assessments.end_assessment >=' => Chronos::now(),
+            'Assessments.status' => 'open'
           ])
-          ->order(['Assessments.end_assessment' => 'ASC']);
+          ->order([
+            'Assessments.end_assessment' => 'DESC',
+            'Disciplines.name' => 'ASC',
+            'Teams.name' => 'ASC'
+          ]);
+
 
         if ($appraisers->isEmpty()) $appraisers = false;
         $this->set('appraisers', $appraisers);

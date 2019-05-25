@@ -1,5 +1,5 @@
 body.not-logged {
-  background-color: #E5E5E5;
+  background-color: $content-background-not-logged;
 }
 .not-logged {
   main {
@@ -8,7 +8,7 @@ body.not-logged {
       margin-top: 50px;
       margin-left: 0;
       padding: 30px 5px;
-      background-color: #E5E5E5;
+      background-color: $content-background-not-logged;
       transition: margin-left 0.3s ease;
       @media(min-width: 768px) { }
       @media(max-width: 767px) {

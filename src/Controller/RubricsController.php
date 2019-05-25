@@ -261,7 +261,7 @@ class RubricsController extends AppController
     $query = $this->request->query();
     $search = (array_key_exists('search', $query)) ? $query['search'] : '';
     $start = (array_key_exists('start', $query)) ? $query['start'] : 1;
-    $length = (array_key_exists('length', $query)) ? $query['length'] : 2;
+    $length = (array_key_exists('length', $query)) ? $query['length'] : 10;
 
     $rubrics= $this->Rubrics->find('table', [
       'user_id' => $this->Auth->user('id'),

@@ -111,6 +111,8 @@ class TeamsController extends AppController {
       ->contain(['Users'])
       ->where(['TeamUsers.team_id' => $data['team_id']]);
 
+    //Log::write('debug', print_r($users->toList(), true));
+
     $this->set(compact('users'));
   }
 

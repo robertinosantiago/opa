@@ -716,13 +716,19 @@ class AssessmentsController extends AppController {
         $peerTable->save($peer);
 
         $assessmentPeerTable = TableRegistry::get('AssessmentPeers');
+
+        // TODO: calcular o score da avaliação
+        //fazer essa atribuição no final do laço
         $values = [
           'comments' => $data['comments'],
           'peer_id' => $peer->id,
+          'score' => 0,
           'assessment_peer_rubrics' => []
         ];
 
         $labels = json_decode($assessmentUser->assessment->labels);
+        $totalScore = 0;
+        $totalWeight = 0;
 
         $rubricTable = TableRegistry::get('AssessmentRubrics');
         foreach ($data['rubric'] as $k => $v) {
@@ -731,14 +737,22 @@ class AssessmentsController extends AppController {
             'AssessmentRubrics.assessment_id' => $assessmentUser->assessment->id
           ])->first();
 
+          $score = (($data['score'][$k] > count($labels) - 1 || $data['score'][$k] < 0) ? 0 : ($data['score'][$k] * 1.0) / (count($labels) - 1));
+          $totalScore += $score * $rubric->weight;
+          $totalWeight += $rubric->weight;
+
           $values['assessment_peer_rubrics'][] = [
             'rubric_id' => $rubric->rubric_id,
             'weight' => $rubric->weight,
             'comments' => $data['rubric_comments'][$k],
             'label' => ($data['score'][$k] > count($labels) - 1 ? $labels[0] : $labels[$data['score'][$k]]),
-            'score' => ($data['score'][$k] > count($labels) - 1 ? 0 : ($data['score'][$k] * 1.0) / (count($labels) - 1))
+            'score' => $score
           ];
         }
+
+        $values['score'] = ($totalScore / $totalWeight) * $assessmentUser->assessment->maximum_score;
+
+        // debug($values);
 
         $assessmentPeer = $assessmentPeerTable->newEntity($values, ['validate' => false]);
 
@@ -792,7 +806,7 @@ class AssessmentsController extends AppController {
           $insert[] = [
             'user_id' => $data['Users']['id'][$key],
             'assessment_id' => $assessment->id,
-            'score' => $score,
+            'score' => ($score < 0 || $score > $assessment->maximum_score) ? 0 : $score,
             'from_teacher' => 1
           ];
         } else {
@@ -915,6 +929,62 @@ class AssessmentsController extends AppController {
   }
 
   /**
+  * Método utilizado para visualizar, via Ajax, a avaliação do aluno.
+  *
+  * Este método está sendo usado em:
+  * - /assessments/scores/$id
+  */
+  public function viewAssessmentUser() {
+    $this->viewBuilder()->layout('ajax');
+    $this->request->allowMethod(['post']);
+
+    $data = $this->request->getData();
+    $assessment_id = $data['assessment_id'];
+    $user_id = $data['user_id'];
+
+    $assessmentUser = TableRegistry::get('AssessmentUsers')
+      ->find()
+      ->contain('Assessments')
+      ->where([
+        'AssessmentUsers.user_id' => $user_id,
+        'AssessmentUsers.assessment_id' => $assessment_id,
+        'Assessments.user_id' => $this->Auth->user('id')
+      ])
+      ->first();
+
+    if (!$assessmentUser) {
+      // TODO: Substituir para funcionar via ajax
+      $this->Flash->error(__('Você não está autorizado a acessar essa avaliação.'));
+      return $this->redirect(['controller' => 'Home', 'action' => 'index']);
+    }
+
+
+    $peers = TableRegistry::get('Peers')
+      ->find()
+      ->contain(['Users','AssessmentPeers' => ['AssessmentPeerRubrics' => 'Rubrics']])
+      ->innerJoinWith('Users', function($q){
+        return $q->where('Peers.appraiser_id = Users.id');
+      })
+      ->where([
+        'Peers.assessment_id' => $assessment_id,
+        'Peers.user_id' => $user_id
+      ]);
+
+    $this->set(compact('assessmentUser', 'peers'));
+    // debug($peers->toList());
+
+    // $filter = ['Peers.assessment_id' => $assessment_id, 'Peers.user_id' => $user_id];
+    //   ->find()
+    //   ->contain('Peers', function($q) use ($filter) {
+    //     return $q->where($filter);
+    //   })
+    //   ->innerJoinWith('Peers', function($q) use ($filter){
+    //     return $q->where($filter);
+    //   });
+    //   debug($assessmentUser->toList());
+  }
+
+  /**
    * Esta função é chamada antes que cada requisição.
    * Altera o layout padrão para o LOGGED
    */
@@ -949,7 +1019,7 @@ class AssessmentsController extends AppController {
       'index', 'add', 'addRubric', 'removeRubric', 'changeScales', 'getFile',
       'listPeers', 'addPeerManual', 'removeAppraiser', 'removeAllPeers',
       'peersRandom', 'submit', 'removeFile', 'appraiser', 'viewSubmit',
-      'viewAppraiser'
+      'viewAppraiser', 'viewAssessmentUser'
     ])) {
       return true;
     }

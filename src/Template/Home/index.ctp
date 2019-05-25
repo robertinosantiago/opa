@@ -101,13 +101,14 @@
             <div class="card-body">
               <table class="table table-striped table-hover">
                 <tbody>
-                  <?php foreach ($appraisers as $assessment): ?>
+                  <?php foreach ($appraisers as $appraiser): ?>
                     <tr>
                       <td>
-                        <?= __('Submissão') ?> : <?= $assessment->AssessmentUsers['id'] ?> <br>
-                        <strong><?= $assessment->title ?></strong><br>
-                        <?= $assessment->Teams['name'] ?> [ <?= $assessment->Disciplines['name'] ?> ] <br>
-                        <?= __('De') ?>: <?= $assessment->start_assessment->i18nFormat($dateFormat) ?> - <?= __('Até') ?>: <?= $assessment->end_assessment->i18nFormat($dateFormat) ?>
+                        <?= __('Submissão') ?> : <?= $appraiser->AssessmentUsers['id'] ?> <br>
+                        <strong><?= $appraiser->Assessments['title'] ?></strong><br>
+                        <?= $appraiser->Teams['name'] ?> [ <?= $appraiser->Disciplines['name'] ?> ] <br>
+                        <?php // TODO: formatar a data ?>
+                        <?= __('De') ?>: <?= $appraiser->Assessments['start_assessment'] ?> - <?= __('Até') ?>: <?= $appraiser->Assessments['end_assessment'] ?>
                       </td>
                       <td class="text-right">
                         <?=$this->Html->link(
@@ -115,7 +116,7 @@
                         [
                            'controller' => 'Assessments',
                            'action' => 'appraiser',
-                           $assessment->AssessmentUsers['id'],
+                           $appraiser->AssessmentUsers['id'],
                         ],
                         [
                            'class' => 'btn btn-sm btn-success',

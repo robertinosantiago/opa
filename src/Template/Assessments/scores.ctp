@@ -71,7 +71,10 @@
         <tbody>
           <?php foreach ($assessment->assessment_users as $au): ?>
             <tr>
-              <td><?= $au->user->first_name ?> <?= $au->user->last_name ?></td>
+              <td>
+                <a href="#" class="viewAssessment" data-assessment="<?= $assessment->id ?>" data-user="<?= $au->user->id ?>">
+                  <?= $au->user->first_name ?> <?= $au->user->last_name ?></td>
+                </a>
               <td class="text-center"><?= sprintf("%.2f", $au->score) ?></td>
               <td>
                 <?= $au->from_teacher == 0 ? '' : __('Atividade não enviada') ?>
@@ -83,3 +86,53 @@
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="assessmentModal" tabindex="-1" role="dialog" aria-labelledby="assessmentModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="assessmentModalLabel">
+          <?= __('Avaliação') ?>
+        </h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="<?= __('Fechar') ?>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <i class="fas fa-sign-out-alt"></i>
+          <?= __('Fechar') ?>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<?php $this->start('script'); ?>
+<script type="text/javascript">
+$(document).ready(function(){
+    $('.viewAssessment').on('click', function(e) {
+      e.preventDefault();
+      const $assessment_id = $(this).data('assessment');
+      const $user_id = $(this).data('user');
+
+      $.ajax({
+        url: '<?= $this->Url->build('/assessments/viewAssessmentUser') ?>',
+        method: 'POST',
+        data: {
+          assessment_id: $assessment_id,
+          user_id: $user_id
+        }
+      })
+      .done(function(html) {
+        $('#assessmentModal .modal-body').html(html);
+        $('#assessmentModal').modal('show');
+      });
+    });
+
+});
+</script>
+<?php $this->end(); ?>

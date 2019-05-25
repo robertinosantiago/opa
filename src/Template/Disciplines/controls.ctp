@@ -124,10 +124,19 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-          <i class="fas fa-sign-out-alt"></i>
-          <?= __('Fechar') ?>
-        </button>
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-8" id="resultAdd">
+
+            </div>
+            <div class="col-md-4 text-right">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                <i class="fas fa-sign-out-alt"></i>
+                <?= __('Fechar') ?>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -202,6 +211,22 @@
         }
       })
       .done(function(data){
+        usersTable($team);
+        let html = `
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <?= __('Adicionado com sucesso')?>
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        `;
+        $('#resultAdd').html(html);
+
+        window.setTimeout(function() {
+          $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function(){
+            $(this).remove();
+          });
+        }, 2000);
 
       })
     });

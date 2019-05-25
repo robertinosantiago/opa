@@ -15,12 +15,12 @@
         <?=__('OPA'); ?>:<?=$this->fetch('title') ?>
       </title>
 
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
-        crossorigin="anonymous">
+      <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB"
+        crossorigin="anonymous"> -->
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
 
-      <?=$this->Html->css('bootstrap-social.css'); ?>
       <?=$this->Html->css('main.css'); ?>
+      <?=$this->Html->css('bootstrap-social.css'); ?>
       <?=$this->fetch('meta'); ?>
       <?=$this->fetch('css'); ?>
   </head>
@@ -58,8 +58,14 @@
       </div>
     </nav>
     <main class="content">
-      <?=$this->Flash->render() ?>
-      <?=$this->Flash->render('auth') ?>
+      <div class="container">
+        <div class="row">
+          <div class="col">
+            <?=$this->Flash->render() ?>
+            <?=$this->Flash->render('auth') ?>
+          </div>
+        </div>
+      </div>
       <?=$this->fetch('content') ?>
     </main>
 
@@ -72,16 +78,10 @@
       crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T"
       crossorigin="anonymous"></script>
-    <script src="js/sidebar.js" charset="utf-8"></script>
-    <script type="text/javascript">
-    $(document).ready(function(){
-      window.setTimeout(function() {
-        $(".alert-dismissible").fadeTo(500, 0).slideUp(500, function(){
-          $(this).remove();
-        });
-      }, 4000);
-    })
-    </script>
+      <?=$this->Html->script('sidebar.js'); ?>
+      <?=$this->Html->script('script.js'); ?>
+      <?=$this->fetch('script'); ?>
+
   </body>
 
   </html>

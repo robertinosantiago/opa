@@ -48,6 +48,7 @@
                   'required' => false,
                   'type' => 'file',
                   'class' => 'form-control-file form-control',
+                  'lang' => 'pt'
                 ]
               ); ?>
             </div>
@@ -621,6 +622,10 @@
 
     $('#rubricModal').on('shown.bs.modal', function () {
       rubricsTable();
+    });
+
+    $('#rubricNewModa').on('shown.bs.modal', function(){
+      $('#description-new-rubric').val('');
     });
 
     $(document).on('click', '#btn-team-search', function(){

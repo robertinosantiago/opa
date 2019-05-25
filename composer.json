@@ -40,6 +40,7 @@
     "require": {
         "admad/cakephp-social-auth": "^0.4.0",
         "cakephp/cakephp": "~3.6.4",
+        "cakephp/chronos": "@stable",
         "cakephp/migrations": "^1.8.0",
         "cakephp/plugin-installer": "^1.0",
         "josegonzalez/dotenv": "3.*",
